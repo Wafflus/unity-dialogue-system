@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEngine.UIElements;
 
 namespace DS.Windows
 {
@@ -8,6 +9,20 @@ namespace DS.Windows
         public static void Open()
         {
             GetWindow<DSEditorWindow>("Dialogue Graph");
+        }
+
+        private void OnEnable()
+        {
+            AddGraphView();
+        }
+
+        private void AddGraphView()
+        {
+            DSGraphView graphView = new DSGraphView();
+
+            graphView.StretchToParentSize();
+
+            rootVisualElement.Add(graphView);
         }
     }
 }
