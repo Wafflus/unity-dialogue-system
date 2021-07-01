@@ -1,0 +1,7 @@
+GridBackground
+{
+	--grid-background-color: var(--ds-colors-grid-light-grey-1);
+	--line-color: var(--ds-colors-grid-light-grey-2);
+	--thick-line-color: var(--ds-colors-grid-light-grey-3);
+	--spacing: var(--ds-metrics-grid-25);
+}

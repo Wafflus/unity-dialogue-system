@@ -14,6 +14,8 @@ namespace DS.Windows
         private void OnEnable()
         {
             AddGraphView();
+
+            AddStyles();
         }
 
         private void AddGraphView()
@@ -23,6 +25,13 @@ namespace DS.Windows
             graphView.StretchToParentSize();
 
             rootVisualElement.Add(graphView);
+        }
+
+        private void AddStyles()
+        {
+            StyleSheet styleSheet = (StyleSheet) EditorGUIUtility.Load("DialogueSystem/DSVariables.uss");
+
+            rootVisualElement.styleSheets.Add(styleSheet);
         }
     }
 }
