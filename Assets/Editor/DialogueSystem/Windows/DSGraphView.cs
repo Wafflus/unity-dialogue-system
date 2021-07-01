@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
@@ -8,6 +9,8 @@ namespace DS.Windows
         public DSGraphView()
         {
             AddGridBackground();
+
+            AddStyles();
         }
 
         private void AddGridBackground()
@@ -17,6 +20,13 @@ namespace DS.Windows
             gridBackground.StretchToParentSize();
 
             Insert(0, gridBackground);
+        }
+
+        private void AddStyles()
+        {
+            StyleSheet styleSheet = (StyleSheet) EditorGUIUtility.Load("DialogueSystem/DSGraphViewStyles.uss");
+
+            styleSheets.Add(styleSheet);
         }
     }
 }
