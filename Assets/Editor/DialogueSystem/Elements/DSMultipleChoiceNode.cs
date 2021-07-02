@@ -28,7 +28,7 @@ namespace DS.Elements
                 text = "Add Choice"
             };
 
-            mainContainer.Add(addChoiceButton);
+            mainContainer.Insert(1, addChoiceButton);
 
             /* OUTPUT CONTAINER */
 
