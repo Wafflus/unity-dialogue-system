@@ -14,7 +14,7 @@ namespace DS.Elements
         public string Text { get; set; }
         public DSDialogueType DialogueType { get; set; }
 
-        public void Initialize(Vector2 position)
+        public virtual void Initialize(Vector2 position)
         {
             DialogueName = "DialogueName";
             Choices = new List<string>();
@@ -23,7 +23,7 @@ namespace DS.Elements
             SetPosition(new Rect(position, Vector2.zero));
         }
 
-        public void Draw()
+        public virtual void Draw()
         {
             /* TITLE CONTAINER */
 
