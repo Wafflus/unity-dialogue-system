@@ -61,8 +61,6 @@ namespace DS.Elements
             customDataContainer.Add(textFoldout);
 
             extensionContainer.Add(customDataContainer);
-
-            RefreshExpandedState();
         }
     }
 }
