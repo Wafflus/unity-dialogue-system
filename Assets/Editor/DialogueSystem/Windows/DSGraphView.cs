@@ -30,6 +30,7 @@ namespace DS.Windows
             DSNode node = new DSNode();
 
             node.Initialize();
+            node.Draw();
 
             AddElement(node);
         }
