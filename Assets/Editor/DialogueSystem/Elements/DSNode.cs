@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine.UIElements;
 
 namespace DS.Elements
 {
@@ -17,6 +18,48 @@ namespace DS.Elements
             DialogueName = "DialogueName";
             Choices = new List<string>();
             Text = "Dialogue text.";
+        }
+
+        public void Draw()
+        {
+            /* TITLE CONTAINER */
+
+            TextField dialogueNameTextField = new TextField()
+            {
+                value = DialogueName
+            };
+
+            titleContainer.Insert(0, dialogueNameTextField);
+
+            /* INPUT CONTAINER */
+
+            Port inputPort = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(bool));
+
+            inputPort.portName = "Dialogue Connection";
+
+            inputContainer.Add(inputPort);
+
+            /* EXTENSION CONTAINER */
+
+            VisualElement customDataContainer = new VisualElement();
+
+            Foldout textFoldout = new Foldout()
+            {
+                text = "Dialogue Text"
+            };
+
+            TextField textTextField = new TextField()
+            {
+                value = Text
+            };
+
+            textFoldout.Add(textTextField);
+
+            customDataContainer.Add(textFoldout);
+
+            extensionContainer.Add(customDataContainer);
+
+            RefreshExpandedState();
         }
     }
 }
