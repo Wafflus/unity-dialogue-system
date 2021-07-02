@@ -57,6 +57,8 @@ namespace DS.Windows
 
             this.AddManipulator(CreateNodeContextualMenu("Add Node (Single Choice)", DSDialogueType.SingleChoice));
             this.AddManipulator(CreateNodeContextualMenu("Add Node (Multiple Choice)", DSDialogueType.MultipleChoice));
+
+            this.AddManipulator(CreateGroupContextualMenu());
         }
 
         private IManipulator CreateNodeContextualMenu(string actionTitle, DSDialogueType dialogueType)
@@ -66,6 +68,27 @@ namespace DS.Windows
             );
 
             return contextualMenuManipulator;
+        }
+
+        private IManipulator CreateGroupContextualMenu()
+        {
+            ContextualMenuManipulator contextualMenuManipulator = new ContextualMenuManipulator(
+                menuEvent => menuEvent.menu.AppendAction("Add Group", actionEvent => AddElement(CreateGroup("DialogueGroup", actionEvent.eventInfo.localMousePosition)))
+            );
+
+            return contextualMenuManipulator;
+        }
+
+        private Group CreateGroup(string title, Vector2 position)
+        {
+            Group group = new Group()
+            {
+                title = title
+            };
+
+            group.SetPosition(new Rect(position, Vector2.zero));
+
+            return group;
         }
 
         private DSNode CreateNode(DSDialogueType dialogueType, Vector2 position)
