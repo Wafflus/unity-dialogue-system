@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace DS.Windows
@@ -13,8 +14,6 @@ namespace DS.Windows
             AddManipulators();
             AddGridBackground();
 
-            CreateNode();
-
             AddStyles();
         }
 
@@ -23,16 +22,29 @@ namespace DS.Windows
             SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
 
             this.AddManipulator(new ContentDragger());
+            this.AddManipulator(new SelectionDragger());
+            this.AddManipulator(new RectangleSelector());
+
+            this.AddManipulator(CreateNodeContextualMenu());
         }
 
-        private void CreateNode()
+        private IManipulator CreateNodeContextualMenu()
+        {
+            ContextualMenuManipulator contextualMenuManipulator = new ContextualMenuManipulator(
+                menuEvent => menuEvent.menu.AppendAction("Add Node", actionEvent => AddElement(CreateNode(actionEvent.eventInfo.localMousePosition)))
+            );
+
+            return contextualMenuManipulator;
+        }
+
+        private DSNode CreateNode(Vector2 position)
         {
             DSNode node = new DSNode();
 
-            node.Initialize();
+            node.Initialize(position);
             node.Draw();
 
-            AddElement(node);
+            return node;
         }
 
         private void AddGridBackground()
