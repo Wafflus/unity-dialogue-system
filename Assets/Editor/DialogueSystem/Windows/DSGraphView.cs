@@ -4,12 +4,16 @@ using UnityEngine.UIElements;
 
 namespace DS.Windows
 {
+    using Elements;
+
     public class DSGraphView : GraphView
     {
         public DSGraphView()
         {
             AddManipulators();
             AddGridBackground();
+
+            CreateNode();
 
             AddStyles();
         }
@@ -19,6 +23,15 @@ namespace DS.Windows
             SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
 
             this.AddManipulator(new ContentDragger());
+        }
+
+        private void CreateNode()
+        {
+            DSNode node = new DSNode();
+
+            node.Initialize();
+
+            AddElement(node);
         }
 
         private void AddGridBackground()
