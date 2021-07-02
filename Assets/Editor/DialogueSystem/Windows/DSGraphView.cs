@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -17,6 +18,33 @@ namespace DS.Windows
             AddGridBackground();
 
             AddStyles();
+        }
+
+        public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
+        {
+            List<Port> compatiblePorts = new List<Port>();
+
+            ports.ForEach(port =>
+            {
+                if (startPort == port)
+                {
+                    return;
+                }
+
+                if (startPort.node == port.node)
+                {
+                    return;
+                }
+
+                if (startPort.direction == port.direction)
+                {
+                    return;
+                }
+
+                compatiblePorts.Add(port);
+            });
+
+            return compatiblePorts;
         }
 
         private void AddManipulators()
