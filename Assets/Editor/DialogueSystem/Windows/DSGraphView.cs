@@ -114,9 +114,11 @@ namespace DS.Windows
 
         private void AddStyles()
         {
-            StyleSheet styleSheet = (StyleSheet) EditorGUIUtility.Load("DialogueSystem/DSGraphViewStyles.uss");
+            StyleSheet graphViewStyleSheet = (StyleSheet) EditorGUIUtility.Load("DialogueSystem/DSGraphViewStyles.uss");
+            StyleSheet nodeStyleSheet = (StyleSheet) EditorGUIUtility.Load("DialogueSystem/DSNodeStyles.uss");
 
-            styleSheets.Add(styleSheet);
+            styleSheets.Add(graphViewStyleSheet);
+            styleSheets.Add(nodeStyleSheet);
         }
     }
 }
