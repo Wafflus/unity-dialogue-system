@@ -3,6 +3,8 @@ using UnityEngine.UIElements;
 
 namespace DS.Windows
 {
+    using Utilities;
+
     public class DSEditorWindow : EditorWindow
     {
         [MenuItem("Window/DS/Dialogue Graph")]
@@ -29,9 +31,7 @@ namespace DS.Windows
 
         private void AddStyles()
         {
-            StyleSheet styleSheet = (StyleSheet) EditorGUIUtility.Load("DialogueSystem/DSVariables.uss");
-
-            rootVisualElement.styleSheets.Add(styleSheet);
+            rootVisualElement.AddStyleSheets("DialogueSystem/DSVariables.uss");
         }
     }
 }
