@@ -9,6 +9,7 @@ namespace DS.Windows
 {
     using Elements;
     using Enumerations;
+    using Utilities;
 
     public class DSGraphView : GraphView
     {
@@ -114,11 +115,10 @@ namespace DS.Windows
 
         private void AddStyles()
         {
-            StyleSheet graphViewStyleSheet = (StyleSheet) EditorGUIUtility.Load("DialogueSystem/DSGraphViewStyles.uss");
-            StyleSheet nodeStyleSheet = (StyleSheet) EditorGUIUtility.Load("DialogueSystem/DSNodeStyles.uss");
-
-            styleSheets.Add(graphViewStyleSheet);
-            styleSheets.Add(nodeStyleSheet);
+            this.AddStyleSheets(
+                "DialogueSystem/DSGraphViewStyles.uss",
+                "DialogueSystem/DSNodeStyles.uss"
+            );
         }
     }
 }
