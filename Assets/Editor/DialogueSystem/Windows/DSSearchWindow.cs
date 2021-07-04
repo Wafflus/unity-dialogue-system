@@ -50,11 +50,13 @@ namespace DS.Windows
 
         public bool OnSelectEntry(SearchTreeEntry SearchTreeEntry, SearchWindowContext context)
         {
+            Vector2 localMousePosition = graphView.GetLocalMousePosition(context.screenMousePosition, true);
+
             switch (SearchTreeEntry.userData)
             {
                 case DSDialogueType.SingleChoice:
                 {
-                    DSSingleChoiceNode singleChoiceNode = (DSSingleChoiceNode) graphView.CreateNode(DSDialogueType.SingleChoice, context.screenMousePosition);
+                    DSSingleChoiceNode singleChoiceNode = (DSSingleChoiceNode) graphView.CreateNode(DSDialogueType.SingleChoice, localMousePosition);
 
                     graphView.AddElement(singleChoiceNode);
 
@@ -63,7 +65,7 @@ namespace DS.Windows
 
                 case DSDialogueType.MultipleChoice:
                 {
-                    DSMultipleChoiceNode multipleChoiceNode = (DSMultipleChoiceNode) graphView.CreateNode(DSDialogueType.MultipleChoice, context.screenMousePosition);
+                    DSMultipleChoiceNode multipleChoiceNode = (DSMultipleChoiceNode) graphView.CreateNode(DSDialogueType.MultipleChoice, localMousePosition);
 
                     graphView.AddElement(multipleChoiceNode);
 
@@ -72,7 +74,7 @@ namespace DS.Windows
 
                 case Group _:
                 {
-                    Group group = graphView.CreateGroup("DialogueGroup", context.screenMousePosition);
+                    Group group = graphView.CreateGroup("DialogueGroup", localMousePosition);
 
                     graphView.AddElement(group);
 
