@@ -80,7 +80,7 @@ namespace DS.Windows
             return contextualMenuManipulator;
         }
 
-        private Group CreateGroup(string title, Vector2 position)
+        public Group CreateGroup(string title, Vector2 position)
         {
             Group group = new Group()
             {
@@ -92,7 +92,7 @@ namespace DS.Windows
             return group;
         }
 
-        private DSNode CreateNode(DSDialogueType dialogueType, Vector2 position)
+        public DSNode CreateNode(DSDialogueType dialogueType, Vector2 position)
         {
             Type nodeType = Type.GetType($"DS.Elements.DS{dialogueType}Node");
 
