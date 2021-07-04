@@ -13,10 +13,13 @@ namespace DS.Windows
 
     public class DSGraphView : GraphView
     {
+        private DSSearchWindow searchWindow;
+
         public DSGraphView()
         {
             AddManipulators();
             AddGridBackground();
+            AddSearchWindow();
 
             AddStyles();
         }
@@ -111,6 +114,18 @@ namespace DS.Windows
             gridBackground.StretchToParentSize();
 
             Insert(0, gridBackground);
+        }
+
+        private void AddSearchWindow()
+        {
+            if (searchWindow == null)
+            {
+                searchWindow = ScriptableObject.CreateInstance<DSSearchWindow>();
+            }
+
+            searchWindow.Initialize(this);
+
+            nodeCreationRequest = context => SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), searchWindow);
         }
 
         private void AddStyles()
