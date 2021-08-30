@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace DS.Windows
 {
+    using Data.Error;
     using Elements;
     using Enumerations;
     using Utilities;
@@ -16,9 +16,13 @@ namespace DS.Windows
         private DSEditorWindow editorWindow;
         private DSSearchWindow searchWindow;
 
+        private SerializableDictionary<string, DSNodeErrorData> ungroupedNodes;
+
         public DSGraphView(DSEditorWindow dsEditorWindow)
         {
             editorWindow = dsEditorWindow;
+
+            ungroupedNodes = new SerializableDictionary<string, DSNodeErrorData>();
 
             AddManipulators();
             AddGridBackground();
