@@ -145,6 +145,29 @@ namespace DS.Windows
             }
         }
 
+        public void RemoveUngroupedNode(DSNode node)
+        {
+            string nodeName = node.DialogueName;
+
+            List<DSNode> ungroupedNodesList = ungroupedNodes[nodeName].Nodes;
+
+            ungroupedNodesList.Remove(node);
+
+            node.ResetStyle();
+
+            if (ungroupedNodesList.Count == 1)
+            {
+                ungroupedNodesList[0].ResetStyle();
+
+                return;
+            }
+
+            if (ungroupedNodesList.Count == 0)
+            {
+                ungroupedNodes.Remove(nodeName);
+            }
+        }
+
         private void AddGridBackground()
         {
             GridBackground gridBackground = new GridBackground();
