@@ -108,7 +108,7 @@ namespace DS.Windows
 
             DSNode node = (DSNode) Activator.CreateInstance(nodeType);
 
-            node.Initialize(position);
+            node.Initialize(this, position);
             node.Draw();
 
             AddUngroupedNode(node);
