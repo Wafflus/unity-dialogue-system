@@ -28,6 +28,8 @@ namespace DS.Windows
             AddGridBackground();
             AddSearchWindow();
 
+            OnElementsDeleted();
+
             AddStyles();
         }
 
@@ -114,6 +116,31 @@ namespace DS.Windows
             AddUngroupedNode(node);
 
             return node;
+        }
+
+        private void OnElementsDeleted()
+        {
+            deleteSelection = (operationName, askUser) =>
+            {
+                List<DSNode> nodesToDelete = new List<DSNode>();
+
+                foreach (GraphElement selectedElement in selection)
+                {
+                    if (selectedElement is DSNode node)
+                    {
+                        nodesToDelete.Add(node);
+
+                        continue;
+                    }
+                }
+
+                foreach (DSNode nodeToDelete in nodesToDelete)
+                {
+                    RemoveUngroupedNode(nodeToDelete);
+
+                    RemoveElement(nodeToDelete);
+                }
+            };
         }
 
         public void AddUngroupedNode(DSNode node)
