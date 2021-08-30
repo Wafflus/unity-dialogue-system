@@ -15,6 +15,8 @@ namespace DS.Elements
         public string Text { get; set; }
         public DSDialogueType DialogueType { get; set; }
 
+        private Color defaultBackgroundColor;
+
         public virtual void Initialize(Vector2 position)
         {
             DialogueName = "DialogueName";
@@ -22,6 +24,8 @@ namespace DS.Elements
             Text = "Dialogue text.";
 
             SetPosition(new Rect(position, Vector2.zero));
+
+            defaultBackgroundColor = new Color(29f / 255f, 29f / 255f, 30f / 255f);
 
             mainContainer.AddToClassList("ds-node__main-container");
             extensionContainer.AddToClassList("ds-node__extension-container");
@@ -67,6 +71,16 @@ namespace DS.Elements
             customDataContainer.Add(textFoldout);
 
             extensionContainer.Add(customDataContainer);
+        }
+
+        public void SetErrorStyle(Color color)
+        {
+            mainContainer.style.backgroundColor = color;
+        }
+
+        public void ResetStyle()
+        {
+            mainContainer.style.backgroundColor = defaultBackgroundColor;
         }
     }
 }
