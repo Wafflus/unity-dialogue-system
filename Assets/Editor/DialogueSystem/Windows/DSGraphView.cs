@@ -111,7 +111,38 @@ namespace DS.Windows
             node.Initialize(position);
             node.Draw();
 
+            AddUngroupedNode(node);
+
             return node;
+        }
+
+        public void AddUngroupedNode(DSNode node)
+        {
+            string nodeName = node.DialogueName;
+
+            if (!ungroupedNodes.ContainsKey(nodeName))
+            {
+                DSNodeErrorData nodeErrorData = new DSNodeErrorData();
+
+                nodeErrorData.Nodes.Add(node);
+
+                ungroupedNodes.Add(nodeName, nodeErrorData);
+
+                return;
+            }
+
+            List<DSNode> ungroupedNodesList = ungroupedNodes[nodeName].Nodes;
+
+            ungroupedNodesList.Add(node);
+
+            Color errorColor = ungroupedNodes[nodeName].ErrorData.Color;
+
+            node.SetErrorStyle(errorColor);
+
+            if (ungroupedNodesList.Count == 2)
+            {
+                ungroupedNodesList[0].SetErrorStyle(errorColor);
+            }
         }
 
         private void AddGridBackground()
