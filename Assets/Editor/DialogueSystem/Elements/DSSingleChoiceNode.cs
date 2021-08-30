@@ -5,12 +5,13 @@ namespace DS.Elements
 {
     using Enumerations;
     using Utilities;
+    using Windows;
 
     public class DSSingleChoiceNode : DSNode
     {
-        public override void Initialize(Vector2 position)
+        public override void Initialize(DSGraphView dsGraphView, Vector2 position)
         {
-            base.Initialize(position);
+            base.Initialize(dsGraphView, position);
 
             DialogueType = DSDialogueType.SingleChoice;
 

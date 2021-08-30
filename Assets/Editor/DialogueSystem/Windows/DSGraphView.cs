@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace DS.Windows
 {
+    using Data.Error;
     using Elements;
     using Enumerations;
     using Utilities;
@@ -16,13 +16,19 @@ namespace DS.Windows
         private DSEditorWindow editorWindow;
         private DSSearchWindow searchWindow;
 
+        private SerializableDictionary<string, DSNodeErrorData> ungroupedNodes;
+
         public DSGraphView(DSEditorWindow dsEditorWindow)
         {
             editorWindow = dsEditorWindow;
 
+            ungroupedNodes = new SerializableDictionary<string, DSNodeErrorData>();
+
             AddManipulators();
             AddGridBackground();
             AddSearchWindow();
+
+            OnElementsDeleted();
 
             AddStyles();
         }
@@ -104,10 +110,89 @@ namespace DS.Windows
 
             DSNode node = (DSNode) Activator.CreateInstance(nodeType);
 
-            node.Initialize(position);
+            node.Initialize(this, position);
             node.Draw();
 
+            AddUngroupedNode(node);
+
             return node;
+        }
+
+        private void OnElementsDeleted()
+        {
+            deleteSelection = (operationName, askUser) =>
+            {
+                List<DSNode> nodesToDelete = new List<DSNode>();
+
+                foreach (GraphElement selectedElement in selection)
+                {
+                    if (selectedElement is DSNode node)
+                    {
+                        nodesToDelete.Add(node);
+
+                        continue;
+                    }
+                }
+
+                foreach (DSNode nodeToDelete in nodesToDelete)
+                {
+                    RemoveUngroupedNode(nodeToDelete);
+
+                    RemoveElement(nodeToDelete);
+                }
+            };
+        }
+
+        public void AddUngroupedNode(DSNode node)
+        {
+            string nodeName = node.DialogueName;
+
+            if (!ungroupedNodes.ContainsKey(nodeName))
+            {
+                DSNodeErrorData nodeErrorData = new DSNodeErrorData();
+
+                nodeErrorData.Nodes.Add(node);
+
+                ungroupedNodes.Add(nodeName, nodeErrorData);
+
+                return;
+            }
+
+            List<DSNode> ungroupedNodesList = ungroupedNodes[nodeName].Nodes;
+
+            ungroupedNodesList.Add(node);
+
+            Color errorColor = ungroupedNodes[nodeName].ErrorData.Color;
+
+            node.SetErrorStyle(errorColor);
+
+            if (ungroupedNodesList.Count == 2)
+            {
+                ungroupedNodesList[0].SetErrorStyle(errorColor);
+            }
+        }
+
+        public void RemoveUngroupedNode(DSNode node)
+        {
+            string nodeName = node.DialogueName;
+
+            List<DSNode> ungroupedNodesList = ungroupedNodes[nodeName].Nodes;
+
+            ungroupedNodesList.Remove(node);
+
+            node.ResetStyle();
+
+            if (ungroupedNodesList.Count == 1)
+            {
+                ungroupedNodesList[0].ResetStyle();
+
+                return;
+            }
+
+            if (ungroupedNodesList.Count == 0)
+            {
+                ungroupedNodes.Remove(nodeName);
+            }
         }
 
         private void AddGridBackground()
