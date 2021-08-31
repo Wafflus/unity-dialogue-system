@@ -141,15 +141,26 @@ namespace DS.Windows
             deleteSelection = (operationName, askUser) =>
             {
                 Type groupType = typeof(DSGroup);
+                Type edgeType = typeof(Edge);
 
                 List<DSGroup> groupsToDelete = new List<DSGroup>();
                 List<DSNode> nodesToDelete = new List<DSNode>();
+                List<Edge> edgesToDelete = new List<Edge>();
 
                 foreach (GraphElement selectedElement in selection)
                 {
                     if (selectedElement is DSNode node)
                     {
                         nodesToDelete.Add(node);
+
+                        continue;
+                    }
+
+                    if (selectedElement.GetType() == edgeType)
+                    {
+                        Edge edge = (Edge) selectedElement;
+
+                        edgesToDelete.Add(edge);
 
                         continue;
                     }
@@ -187,6 +198,8 @@ namespace DS.Windows
                     RemoveElement(groupToDelete);
                 }
 
+                DeleteElements(edgesToDelete);
+
                 foreach (DSNode nodeToDelete in nodesToDelete)
                 {
                     if (nodeToDelete.Group != null)
@@ -195,6 +208,8 @@ namespace DS.Windows
                     }
 
                     RemoveUngroupedNode(nodeToDelete);
+
+                    nodeToDelete.DisconnectAllPorts();
 
                     RemoveElement(nodeToDelete);
                 }

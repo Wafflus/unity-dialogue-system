@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 namespace DS.Elements
 {
     using Enumerations;
+    using System;
     using Utilities;
     using Windows;
 
@@ -19,6 +20,14 @@ namespace DS.Elements
 
         private DSGraphView graphView;
         private Color defaultBackgroundColor;
+
+        public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
+        {
+            evt.menu.AppendAction("Disconnect Input Ports", actionEvent => DisconnectInputPorts());
+            evt.menu.AppendAction("Disconnect Output Ports", actionEvent => DisconnectOutputPorts());
+
+            base.BuildContextualMenu(evt);
+        }
 
         public virtual void Initialize(DSGraphView dsGraphView, Vector2 position)
         {
@@ -95,6 +104,35 @@ namespace DS.Elements
             customDataContainer.Add(textFoldout);
 
             extensionContainer.Add(customDataContainer);
+        }
+
+        public void DisconnectAllPorts()
+        {
+            DisconnectInputPorts();
+            DisconnectOutputPorts();
+        }
+
+        private void DisconnectInputPorts()
+        {
+            DisconnectPorts(inputContainer);
+        }
+
+        private void DisconnectOutputPorts()
+        {
+            DisconnectPorts(outputContainer);
+        }
+
+        private void DisconnectPorts(VisualElement container)
+        {
+            foreach (Port port in container.Children())
+            {
+                if (!port.connected)
+                {
+                    continue;
+                }
+
+                graphView.DeleteElements(port.connections);
+            }
         }
 
         public void SetErrorStyle(Color color)
