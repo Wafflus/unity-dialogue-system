@@ -35,6 +35,7 @@ namespace DS.Windows
             OnElementsDeleted();
             OnGroupElementsAdded();
             OnGroupElementsRemoved();
+            OnGroupRenamed();
 
             AddStyles();
         }
@@ -170,29 +171,6 @@ namespace DS.Windows
             };
         }
 
-        private void RemoveGroup(DSGroup group)
-        {
-            string groupName = group.title;
-
-            List<DSGroup> groupsList = groups[groupName].Groups;
-
-            groupsList.Remove(group);
-
-            group.ResetStyle();
-
-            if (groupsList.Count == 1)
-            {
-                groupsList[0].ResetStyle();
-
-                return;
-            }
-
-            if (groupsList.Count == 0)
-            {
-                groups.Remove(groupName);
-            }
-        }
-
         private void OnGroupElementsAdded()
         {
             elementsAddedToGroup = (group, elements) =>
@@ -230,6 +208,20 @@ namespace DS.Windows
                     RemoveGroupedNode(node, dsGroup);
                     AddUngroupedNode(node);
                 }
+            };
+        }
+
+        private void OnGroupRenamed()
+        {
+            groupTitleChanged = (group, newTitle) =>
+            {
+                DSGroup dsGroup = (DSGroup) group;
+
+                RemoveGroup(dsGroup);
+
+                dsGroup.OldTitle = newTitle;
+
+                AddGroup(dsGroup);
             };
         }
 
@@ -311,6 +303,29 @@ namespace DS.Windows
             if (groupsList.Count == 2)
             {
                 groupsList[0].SetErrorStyle(errorColor);
+            }
+        }
+
+        private void RemoveGroup(DSGroup group)
+        {
+            string oldGroupName = group.OldTitle;
+
+            List<DSGroup> groupsList = groups[oldGroupName].Groups;
+
+            groupsList.Remove(group);
+
+            group.ResetStyle();
+
+            if (groupsList.Count == 1)
+            {
+                groupsList[0].ResetStyle();
+
+                return;
+            }
+
+            if (groupsList.Count == 0)
+            {
+                groups.Remove(oldGroupName);
             }
         }
 
