@@ -96,14 +96,9 @@ namespace DS.Windows
             return contextualMenuManipulator;
         }
 
-        public Group CreateGroup(string title, Vector2 position)
+        public DSGroup CreateGroup(string title, Vector2 position)
         {
-            Group group = new Group()
-            {
-                title = title
-            };
-
-            group.SetPosition(new Rect(position, Vector2.zero));
+            DSGroup group = new DSGroup(title, position);
 
             return group;
         }
@@ -163,10 +158,11 @@ namespace DS.Windows
                         continue;
                     }
 
+                    DSGroup dsGroup = (DSGroup) group;
                     DSNode node = (DSNode) element;
 
                     RemoveUngroupedNode(node);
-                    AddGroupedNode(node, group);
+                    AddGroupedNode(node, dsGroup);
                 }
             };
         }
@@ -182,9 +178,10 @@ namespace DS.Windows
                         continue;
                     }
 
+                    DSGroup dsGroup = (DSGroup) group;
                     DSNode node = (DSNode) element;
 
-                    RemoveGroupedNode(node, group);
+                    RemoveGroupedNode(node, dsGroup);
                     AddUngroupedNode(node);
                 }
             };
@@ -242,7 +239,7 @@ namespace DS.Windows
             }
         }
 
-        public void AddGroupedNode(DSNode node, Group group)
+        public void AddGroupedNode(DSNode node, DSGroup group)
         {
             string nodeName = node.DialogueName;
 
@@ -278,7 +275,7 @@ namespace DS.Windows
             }
         }
 
-        public void RemoveGroupedNode(DSNode node, Group group)
+        public void RemoveGroupedNode(DSNode node, DSGroup group)
         {
             string nodeName = node.DialogueName;
 
