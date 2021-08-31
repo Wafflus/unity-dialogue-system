@@ -5,12 +5,15 @@ namespace DS.Elements
 {
     public class DSGroup : Group
     {
+        public string OldTitle { get; set; }
+
         private Color defaultBorderColor;
         private float defaultBorderWidth;
 
         public DSGroup(string groupTitle, Vector2 position)
         {
             title = groupTitle;
+            OldTitle = groupTitle;
 
             SetPosition(new Rect(position, Vector2.zero));
 
