@@ -179,6 +179,7 @@ namespace DS.Windows
 
                     DSNode node = (DSNode) element;
 
+                    RemoveGroupNode(node, group);
                     AddUngroupedNode(node);
                 }
             };
@@ -267,6 +268,34 @@ namespace DS.Windows
             if (groupedNodesList.Count == 2)
             {
                 groupedNodesList[0].SetErrorStyle(errorColor);
+            }
+        }
+
+        public void RemoveGroupNode(DSNode node, Group group)
+        {
+            string nodeName = node.DialogueName;
+
+            List<DSNode> groupedNodesList = groupedNodes[group][nodeName].Nodes;
+
+            groupedNodesList.Remove(node);
+
+            node.ResetStyle();
+
+            if (groupedNodesList.Count == 1)
+            {
+                groupedNodesList[0].ResetStyle();
+
+                return;
+            }
+
+            if (groupedNodesList.Count == 0)
+            {
+                groupedNodes[group].Remove(nodeName);
+
+                if (groupedNodes[group].Count == 0)
+                {
+                    groupedNodes.Remove(group);
+                }
             }
         }
 
