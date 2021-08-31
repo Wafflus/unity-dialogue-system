@@ -125,6 +125,9 @@ namespace DS.Windows
         {
             deleteSelection = (operationName, askUser) =>
             {
+                Type groupType = typeof(DSGroup);
+
+                List<DSGroup> groupsToDelete = new List<DSGroup>();
                 List<DSNode> nodesToDelete = new List<DSNode>();
 
                 foreach (GraphElement selectedElement in selection)
@@ -135,6 +138,20 @@ namespace DS.Windows
 
                         continue;
                     }
+
+                    if (selectedElement.GetType() != groupType)
+                    {
+                        continue;
+                    }
+
+                    DSGroup group = (DSGroup) selectedElement;
+
+                    groupsToDelete.Add(group);
+                }
+
+                foreach (DSGroup groupToDelete in groupsToDelete)
+                {
+                    RemoveElement(groupToDelete);
                 }
 
                 foreach (DSNode nodeToDelete in nodesToDelete)
