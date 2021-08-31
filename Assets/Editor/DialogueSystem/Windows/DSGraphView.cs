@@ -161,13 +161,29 @@ namespace DS.Windows
 
                     DSGroup group = (DSGroup) selectedElement;
 
-                    RemoveGroup(group);
-
                     groupsToDelete.Add(group);
                 }
 
                 foreach (DSGroup groupToDelete in groupsToDelete)
                 {
+                    List<DSNode> groupNodes = new List<DSNode>();
+
+                    foreach (GraphElement groupElement in groupToDelete.containedElements)
+                    {
+                        if (!(groupElement is DSNode))
+                        {
+                            continue;
+                        }
+
+                        DSNode groupNode = (DSNode) groupElement;
+
+                        groupNodes.Add(groupNode);
+                    }
+
+                    groupToDelete.RemoveElements(groupNodes);
+
+                    RemoveGroup(groupToDelete);
+
                     RemoveElement(groupToDelete);
                 }
 
