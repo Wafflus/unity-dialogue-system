@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 namespace DS.Windows
@@ -16,6 +17,7 @@ namespace DS.Windows
         private void OnEnable()
         {
             AddGraphView();
+            AddToolbar();
 
             AddStyles();
         }
@@ -27,6 +29,13 @@ namespace DS.Windows
             graphView.StretchToParentSize();
 
             rootVisualElement.Add(graphView);
+        }
+
+        private void AddToolbar()
+        {
+            Toolbar toolbar = new Toolbar();
+
+            rootVisualElement.Add(toolbar);
         }
 
         private void AddStyles()
