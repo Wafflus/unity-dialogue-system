@@ -17,6 +17,7 @@ namespace DS.Windows
         private DSSearchWindow searchWindow;
 
         private SerializableDictionary<string, DSNodeErrorData> ungroupedNodes;
+        private SerializableDictionary<string, DSGroupErrorData> groups;
         private SerializableDictionary<Group, SerializableDictionary<string, DSNodeErrorData>> groupedNodes;
 
         public DSGraphView(DSEditorWindow dsEditorWindow)
@@ -24,6 +25,7 @@ namespace DS.Windows
             editorWindow = dsEditorWindow;
 
             ungroupedNodes = new SerializableDictionary<string, DSNodeErrorData>();
+            groups = new SerializableDictionary<string, DSGroupErrorData>();
             groupedNodes = new SerializableDictionary<Group, SerializableDictionary<string, DSNodeErrorData>>();
 
             AddManipulators();
@@ -33,6 +35,7 @@ namespace DS.Windows
             OnElementsDeleted();
             OnGroupElementsAdded();
             OnGroupElementsRemoved();
+            OnGroupRenamed();
 
             AddStyles();
         }
@@ -96,14 +99,11 @@ namespace DS.Windows
             return contextualMenuManipulator;
         }
 
-        public Group CreateGroup(string title, Vector2 position)
+        public DSGroup CreateGroup(string title, Vector2 position)
         {
-            Group group = new Group()
-            {
-                title = title
-            };
+            DSGroup group = new DSGroup(title, position);
 
-            group.SetPosition(new Rect(position, Vector2.zero));
+            AddGroup(group);
 
             return group;
         }
@@ -126,6 +126,9 @@ namespace DS.Windows
         {
             deleteSelection = (operationName, askUser) =>
             {
+                Type groupType = typeof(DSGroup);
+
+                List<DSGroup> groupsToDelete = new List<DSGroup>();
                 List<DSNode> nodesToDelete = new List<DSNode>();
 
                 foreach (GraphElement selectedElement in selection)
@@ -136,6 +139,22 @@ namespace DS.Windows
 
                         continue;
                     }
+
+                    if (selectedElement.GetType() != groupType)
+                    {
+                        continue;
+                    }
+
+                    DSGroup group = (DSGroup) selectedElement;
+
+                    RemoveGroup(group);
+
+                    groupsToDelete.Add(group);
+                }
+
+                foreach (DSGroup groupToDelete in groupsToDelete)
+                {
+                    RemoveElement(groupToDelete);
                 }
 
                 foreach (DSNode nodeToDelete in nodesToDelete)
@@ -163,10 +182,11 @@ namespace DS.Windows
                         continue;
                     }
 
+                    DSGroup dsGroup = (DSGroup) group;
                     DSNode node = (DSNode) element;
 
                     RemoveUngroupedNode(node);
-                    AddGroupedNode(node, group);
+                    AddGroupedNode(node, dsGroup);
                 }
             };
         }
@@ -182,11 +202,26 @@ namespace DS.Windows
                         continue;
                     }
 
+                    DSGroup dsGroup = (DSGroup) group;
                     DSNode node = (DSNode) element;
 
-                    RemoveGroupedNode(node, group);
+                    RemoveGroupedNode(node, dsGroup);
                     AddUngroupedNode(node);
                 }
+            };
+        }
+
+        private void OnGroupRenamed()
+        {
+            groupTitleChanged = (group, newTitle) =>
+            {
+                DSGroup dsGroup = (DSGroup) group;
+
+                RemoveGroup(dsGroup);
+
+                dsGroup.OldTitle = newTitle;
+
+                AddGroup(dsGroup);
             };
         }
 
@@ -242,7 +277,59 @@ namespace DS.Windows
             }
         }
 
-        public void AddGroupedNode(DSNode node, Group group)
+        private void AddGroup(DSGroup group)
+        {
+            string groupName = group.title;
+
+            if (!groups.ContainsKey(groupName))
+            {
+                DSGroupErrorData groupErrorData = new DSGroupErrorData();
+
+                groupErrorData.Groups.Add(group);
+
+                groups.Add(groupName, groupErrorData);
+
+                return;
+            }
+
+            List<DSGroup> groupsList = groups[groupName].Groups;
+
+            groupsList.Add(group);
+
+            Color errorColor = groups[groupName].ErrorData.Color;
+
+            group.SetErrorStyle(errorColor);
+
+            if (groupsList.Count == 2)
+            {
+                groupsList[0].SetErrorStyle(errorColor);
+            }
+        }
+
+        private void RemoveGroup(DSGroup group)
+        {
+            string oldGroupName = group.OldTitle;
+
+            List<DSGroup> groupsList = groups[oldGroupName].Groups;
+
+            groupsList.Remove(group);
+
+            group.ResetStyle();
+
+            if (groupsList.Count == 1)
+            {
+                groupsList[0].ResetStyle();
+
+                return;
+            }
+
+            if (groupsList.Count == 0)
+            {
+                groups.Remove(oldGroupName);
+            }
+        }
+
+        public void AddGroupedNode(DSNode node, DSGroup group)
         {
             string nodeName = node.DialogueName;
 
@@ -278,7 +365,7 @@ namespace DS.Windows
             }
         }
 
-        public void RemoveGroupedNode(DSNode node, Group group)
+        public void RemoveGroupedNode(DSNode node, DSGroup group)
         {
             string nodeName = node.DialogueName;
 
