@@ -8,6 +8,8 @@ namespace DS.Windows
 
     public class DSEditorWindow : EditorWindow
     {
+        private string defaultFileName = "DialoguesFileName";
+
         [MenuItem("Window/DS/Dialogue Graph")]
         public static void Open()
         {
@@ -34,6 +36,10 @@ namespace DS.Windows
         private void AddToolbar()
         {
             Toolbar toolbar = new Toolbar();
+
+            TextField fileNameTextField = DSElementUtility.CreateTextField(defaultFileName, "File Name:");
+
+            toolbar.Add(fileNameTextField);
 
             rootVisualElement.Add(toolbar);
         }
