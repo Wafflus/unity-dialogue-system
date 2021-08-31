@@ -17,18 +17,22 @@ namespace DS.Windows
         private DSSearchWindow searchWindow;
 
         private SerializableDictionary<string, DSNodeErrorData> ungroupedNodes;
+        private SerializableDictionary<Group, SerializableDictionary<string, DSNodeErrorData>> groupedNodes;
 
         public DSGraphView(DSEditorWindow dsEditorWindow)
         {
             editorWindow = dsEditorWindow;
 
             ungroupedNodes = new SerializableDictionary<string, DSNodeErrorData>();
+            groupedNodes = new SerializableDictionary<Group, SerializableDictionary<string, DSNodeErrorData>>();
 
             AddManipulators();
             AddGridBackground();
             AddSearchWindow();
 
             OnElementsDeleted();
+            OnGroupElementsAdded();
+            OnGroupElementsRemoved();
 
             AddStyles();
         }
@@ -136,9 +140,52 @@ namespace DS.Windows
 
                 foreach (DSNode nodeToDelete in nodesToDelete)
                 {
+                    if (nodeToDelete.Group != null)
+                    {
+                        nodeToDelete.Group.RemoveElement(nodeToDelete);
+                    }
+
                     RemoveUngroupedNode(nodeToDelete);
 
                     RemoveElement(nodeToDelete);
+                }
+            };
+        }
+
+        private void OnGroupElementsAdded()
+        {
+            elementsAddedToGroup = (group, elements) =>
+            {
+                foreach (GraphElement element in elements)
+                {
+                    if (!(element is DSNode))
+                    {
+                        continue;
+                    }
+
+                    DSNode node = (DSNode) element;
+
+                    RemoveUngroupedNode(node);
+                    AddGroupedNode(node, group);
+                }
+            };
+        }
+
+        private void OnGroupElementsRemoved()
+        {
+            elementsRemovedFromGroup = (group, elements) =>
+            {
+                foreach (GraphElement element in elements)
+                {
+                    if (!(element is DSNode))
+                    {
+                        continue;
+                    }
+
+                    DSNode node = (DSNode) element;
+
+                    RemoveGroupedNode(node, group);
+                    AddUngroupedNode(node);
                 }
             };
         }
@@ -192,6 +239,72 @@ namespace DS.Windows
             if (ungroupedNodesList.Count == 0)
             {
                 ungroupedNodes.Remove(nodeName);
+            }
+        }
+
+        public void AddGroupedNode(DSNode node, Group group)
+        {
+            string nodeName = node.DialogueName;
+
+            node.Group = group;
+
+            if (!groupedNodes.ContainsKey(group))
+            {
+                groupedNodes.Add(group, new SerializableDictionary<string, DSNodeErrorData>());
+            }
+
+            if (!groupedNodes[group].ContainsKey(nodeName))
+            {
+                DSNodeErrorData nodeErrorData = new DSNodeErrorData();
+
+                nodeErrorData.Nodes.Add(node);
+
+                groupedNodes[group].Add(nodeName, nodeErrorData);
+
+                return;
+            }
+
+            List<DSNode> groupedNodesList = groupedNodes[group][nodeName].Nodes;
+
+            groupedNodesList.Add(node);
+
+            Color errorColor = groupedNodes[group][nodeName].ErrorData.Color;
+
+            node.SetErrorStyle(errorColor);
+
+            if (groupedNodesList.Count == 2)
+            {
+                groupedNodesList[0].SetErrorStyle(errorColor);
+            }
+        }
+
+        public void RemoveGroupedNode(DSNode node, Group group)
+        {
+            string nodeName = node.DialogueName;
+
+            node.Group = null;
+
+            List<DSNode> groupedNodesList = groupedNodes[group][nodeName].Nodes;
+
+            groupedNodesList.Remove(node);
+
+            node.ResetStyle();
+
+            if (groupedNodesList.Count == 1)
+            {
+                groupedNodesList[0].ResetStyle();
+
+                return;
+            }
+
+            if (groupedNodesList.Count == 0)
+            {
+                groupedNodes[group].Remove(nodeName);
+
+                if (groupedNodes[group].Count == 0)
+                {
+                    groupedNodes.Remove(group);
+                }
             }
         }
 
