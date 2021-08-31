@@ -140,6 +140,11 @@ namespace DS.Windows
 
                 foreach (DSNode nodeToDelete in nodesToDelete)
                 {
+                    if (nodeToDelete.Group != null)
+                    {
+                        nodeToDelete.Group.RemoveElement(nodeToDelete);
+                    }
+
                     RemoveUngroupedNode(nodeToDelete);
 
                     RemoveElement(nodeToDelete);
