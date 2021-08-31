@@ -146,6 +146,8 @@ namespace DS.Windows
 
                     DSGroup group = (DSGroup) selectedElement;
 
+                    RemoveGroup(group);
+
                     groupsToDelete.Add(group);
                 }
 
@@ -166,6 +168,29 @@ namespace DS.Windows
                     RemoveElement(nodeToDelete);
                 }
             };
+        }
+
+        private void RemoveGroup(DSGroup group)
+        {
+            string groupName = group.title;
+
+            List<DSGroup> groupsList = groups[groupName].Groups;
+
+            groupsList.Remove(group);
+
+            group.ResetStyle();
+
+            if (groupsList.Count == 1)
+            {
+                groupsList[0].ResetStyle();
+
+                return;
+            }
+
+            if (groupsList.Count == 0)
+            {
+                groups.Remove(groupName);
+            }
         }
 
         private void OnGroupElementsAdded()
