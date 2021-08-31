@@ -39,7 +39,10 @@ namespace DS.Windows
 
             TextField fileNameTextField = DSElementUtility.CreateTextField(defaultFileName, "File Name:");
 
+            Button saveButton = DSElementUtility.CreateButton("Save");
+
             toolbar.Add(fileNameTextField);
+            toolbar.Add(saveButton);
 
             rootVisualElement.Add(toolbar);
         }
