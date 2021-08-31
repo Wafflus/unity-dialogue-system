@@ -8,7 +8,9 @@ namespace DS.Windows
 
     public class DSEditorWindow : EditorWindow
     {
-        private string defaultFileName = "DialoguesFileName";
+        private readonly string defaultFileName = "DialoguesFileName";
+
+        private Button saveButton;
 
         [MenuItem("Window/DS/Dialogue Graph")]
         public static void Open()
@@ -39,7 +41,7 @@ namespace DS.Windows
 
             TextField fileNameTextField = DSElementUtility.CreateTextField(defaultFileName, "File Name:");
 
-            Button saveButton = DSElementUtility.CreateButton("Save");
+            saveButton = DSElementUtility.CreateButton("Save");
 
             toolbar.Add(fileNameTextField);
             toolbar.Add(saveButton);
@@ -50,6 +52,16 @@ namespace DS.Windows
         private void AddStyles()
         {
             rootVisualElement.AddStyleSheets("DialogueSystem/DSVariables.uss");
+        }
+
+        public void EnableSaving()
+        {
+            saveButton.SetEnabled(true);
+        }
+
+        public void DisableSaving()
+        {
+            saveButton.SetEnabled(false);
         }
     }
 }
