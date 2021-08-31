@@ -102,6 +102,8 @@ namespace DS.Windows
         {
             DSGroup group = new DSGroup(title, position);
 
+            AddGroup(group);
+
             return group;
         }
 
@@ -238,6 +240,35 @@ namespace DS.Windows
             if (ungroupedNodesList.Count == 0)
             {
                 ungroupedNodes.Remove(nodeName);
+            }
+        }
+
+        private void AddGroup(DSGroup group)
+        {
+            string groupName = group.title;
+
+            if (!groups.ContainsKey(groupName))
+            {
+                DSGroupErrorData groupErrorData = new DSGroupErrorData();
+
+                groupErrorData.Groups.Add(group);
+
+                groups.Add(groupName, groupErrorData);
+
+                return;
+            }
+
+            List<DSGroup> groupsList = groups[groupName].Groups;
+
+            groupsList.Add(group);
+
+            Color errorColor = groups[groupName].ErrorData.Color;
+
+            group.SetErrorStyle(errorColor);
+
+            if (groupsList.Count == 2)
+            {
+                groupsList[0].SetErrorStyle(errorColor);
             }
         }
 
