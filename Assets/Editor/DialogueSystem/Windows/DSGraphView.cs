@@ -209,6 +209,8 @@ namespace DS.Windows
 
                     RemoveUngroupedNode(nodeToDelete);
 
+                    nodeToDelete.DisconnectAllPorts();
+
                     RemoveElement(nodeToDelete);
                 }
             };
