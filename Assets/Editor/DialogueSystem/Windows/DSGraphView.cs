@@ -20,6 +20,31 @@ namespace DS.Windows
         private SerializableDictionary<string, DSGroupErrorData> groups;
         private SerializableDictionary<Group, SerializableDictionary<string, DSNodeErrorData>> groupedNodes;
 
+        private int repeatedFileNames;
+
+        public int RepeatedFileNames
+        {
+            get
+            {
+                return repeatedFileNames;
+            }
+
+            set
+            {
+                repeatedFileNames = value;
+
+                if (repeatedFileNames == 0)
+                {
+                    editorWindow.EnableSaving();
+                }
+
+                if (repeatedFileNames == 1)
+                {
+                    editorWindow.DisableSaving();
+                }
+            }
+        }
+
         public DSGraphView(DSEditorWindow dsEditorWindow)
         {
             editorWindow = dsEditorWindow;
@@ -295,6 +320,8 @@ namespace DS.Windows
 
             if (ungroupedNodesList.Count == 2)
             {
+                ++RepeatedFileNames;
+
                 ungroupedNodesList[0].SetErrorStyle(errorColor);
             }
         }
@@ -311,6 +338,8 @@ namespace DS.Windows
 
             if (ungroupedNodesList.Count == 1)
             {
+                --RepeatedFileNames;
+
                 ungroupedNodesList[0].ResetStyle();
 
                 return;
@@ -347,6 +376,8 @@ namespace DS.Windows
 
             if (groupsList.Count == 2)
             {
+                ++RepeatedFileNames;
+
                 groupsList[0].SetErrorStyle(errorColor);
             }
         }
@@ -363,6 +394,8 @@ namespace DS.Windows
 
             if (groupsList.Count == 1)
             {
+                --RepeatedFileNames;
+
                 groupsList[0].ResetStyle();
 
                 return;
@@ -406,6 +439,8 @@ namespace DS.Windows
 
             if (groupedNodesList.Count == 2)
             {
+                ++RepeatedFileNames;
+
                 groupedNodesList[0].SetErrorStyle(errorColor);
             }
         }
@@ -424,6 +459,8 @@ namespace DS.Windows
 
             if (groupedNodesList.Count == 1)
             {
+                --RepeatedFileNames;
+
                 groupedNodesList[0].ResetStyle();
 
                 return;
