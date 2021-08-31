@@ -31,6 +31,7 @@ namespace DS.Windows
             AddSearchWindow();
 
             OnElementsDeleted();
+            OnGroupElementsAdded();
 
             AddStyles();
         }
@@ -141,6 +142,24 @@ namespace DS.Windows
                     RemoveUngroupedNode(nodeToDelete);
 
                     RemoveElement(nodeToDelete);
+                }
+            };
+        }
+
+        private void OnGroupElementsAdded()
+        {
+            elementsAddedToGroup = (group, elements) =>
+            {
+                foreach (GraphElement element in elements)
+                {
+                    if (!(element is DSNode))
+                    {
+                        continue;
+                    }
+
+                    DSNode node = (DSNode) element;
+
+                    RemoveUngroupedNode(node);
                 }
             };
         }
