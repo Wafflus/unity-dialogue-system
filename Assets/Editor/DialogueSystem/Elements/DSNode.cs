@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 namespace DS.Elements
 {
     using Enumerations;
+    using System;
     using Utilities;
     using Windows;
 
@@ -95,6 +96,25 @@ namespace DS.Elements
             customDataContainer.Add(textFoldout);
 
             extensionContainer.Add(customDataContainer);
+        }
+
+        public void DisconnectAllPorts()
+        {
+            DisconnectPort(inputContainer);
+            DisconnectPort(outputContainer);
+        }
+
+        private void DisconnectPort(VisualElement container)
+        {
+            foreach (Port port in container.Children())
+            {
+                if (!port.connected)
+                {
+                    continue;
+                }
+
+                graphView.DeleteElements(port.connections);
+            }
         }
 
         public void SetErrorStyle(Color color)
