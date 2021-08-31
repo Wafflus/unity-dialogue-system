@@ -179,7 +179,7 @@ namespace DS.Windows
 
                     DSNode node = (DSNode) element;
 
-                    RemoveGroupNode(node, group);
+                    RemoveGroupedNode(node, group);
                     AddUngroupedNode(node);
                 }
             };
@@ -273,7 +273,7 @@ namespace DS.Windows
             }
         }
 
-        public void RemoveGroupNode(DSNode node, Group group)
+        public void RemoveGroupedNode(DSNode node, Group group)
         {
             string nodeName = node.DialogueName;
 
