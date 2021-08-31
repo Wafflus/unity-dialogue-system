@@ -93,7 +93,7 @@ namespace DS.Windows
         private IManipulator CreateGroupContextualMenu()
         {
             ContextualMenuManipulator contextualMenuManipulator = new ContextualMenuManipulator(
-                menuEvent => menuEvent.menu.AppendAction("Add Group", actionEvent => AddElement(CreateGroup("DialogueGroup", GetLocalMousePosition(actionEvent.eventInfo.localMousePosition))))
+                menuEvent => menuEvent.menu.AppendAction("Add Group", actionEvent => CreateGroup("DialogueGroup", GetLocalMousePosition(actionEvent.eventInfo.localMousePosition)))
             );
 
             return contextualMenuManipulator;
@@ -104,6 +104,20 @@ namespace DS.Windows
             DSGroup group = new DSGroup(title, position);
 
             AddGroup(group);
+
+            AddElement(group);
+
+            foreach (GraphElement selectedElement in selection)
+            {
+                if (!(selectedElement is DSNode))
+                {
+                    continue;
+                }
+
+                DSNode node = (DSNode) selectedElement;
+
+                group.AddElement(node);
+            }
 
             return group;
         }
@@ -147,13 +161,29 @@ namespace DS.Windows
 
                     DSGroup group = (DSGroup) selectedElement;
 
-                    RemoveGroup(group);
-
                     groupsToDelete.Add(group);
                 }
 
                 foreach (DSGroup groupToDelete in groupsToDelete)
                 {
+                    List<DSNode> groupNodes = new List<DSNode>();
+
+                    foreach (GraphElement groupElement in groupToDelete.containedElements)
+                    {
+                        if (!(groupElement is DSNode))
+                        {
+                            continue;
+                        }
+
+                        DSNode groupNode = (DSNode) groupElement;
+
+                        groupNodes.Add(groupNode);
+                    }
+
+                    groupToDelete.RemoveElements(groupNodes);
+
+                    RemoveGroup(groupToDelete);
+
                     RemoveElement(groupToDelete);
                 }
 
