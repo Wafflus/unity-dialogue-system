@@ -160,6 +160,7 @@ namespace DS.Windows
                     DSNode node = (DSNode) element;
 
                     RemoveUngroupedNode(node);
+                    AddGroupedNode(node, group);
                 }
             };
         }
@@ -213,6 +214,40 @@ namespace DS.Windows
             if (ungroupedNodesList.Count == 0)
             {
                 ungroupedNodes.Remove(nodeName);
+            }
+        }
+
+        public void AddGroupedNode(DSNode node, Group group)
+        {
+            string nodeName = node.DialogueName;
+
+            if (!groupedNodes.ContainsKey(group))
+            {
+                groupedNodes.Add(group, new SerializableDictionary<string, DSNodeErrorData>());
+            }
+
+            if (!groupedNodes[group].ContainsKey(nodeName))
+            {
+                DSNodeErrorData nodeErrorData = new DSNodeErrorData();
+
+                nodeErrorData.Nodes.Add(node);
+
+                groupedNodes[group].Add(nodeName, nodeErrorData);
+
+                return;
+            }
+
+            List<DSNode> groupedNodesList = groupedNodes[group][nodeName].Nodes;
+
+            groupedNodesList.Add(node);
+
+            Color errorColor = groupedNodes[group][nodeName].ErrorData.Color;
+
+            node.SetErrorStyle(errorColor);
+
+            if (groupedNodesList.Count == 2)
+            {
+                groupedNodesList[0].SetErrorStyle(errorColor);
             }
         }
 
