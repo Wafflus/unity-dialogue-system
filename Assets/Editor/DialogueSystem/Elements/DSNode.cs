@@ -21,6 +21,14 @@ namespace DS.Elements
         private DSGraphView graphView;
         private Color defaultBackgroundColor;
 
+        public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
+        {
+            evt.menu.AppendAction("Disconnect Input Ports", actionEvent => DisconnectInputPorts());
+            evt.menu.AppendAction("Disconnect Output Ports", actionEvent => DisconnectOutputPorts());
+
+            base.BuildContextualMenu(evt);
+        }
+
         public virtual void Initialize(DSGraphView dsGraphView, Vector2 position)
         {
             DialogueName = "DialogueName";
@@ -100,11 +108,21 @@ namespace DS.Elements
 
         public void DisconnectAllPorts()
         {
-            DisconnectPort(inputContainer);
-            DisconnectPort(outputContainer);
+            DisconnectInputPorts();
+            DisconnectOutputPorts();
         }
 
-        private void DisconnectPort(VisualElement container)
+        private void DisconnectInputPorts()
+        {
+            DisconnectPorts(inputContainer);
+        }
+
+        private void DisconnectOutputPorts()
+        {
+            DisconnectPorts(outputContainer);
+        }
+
+        private void DisconnectPorts(VisualElement container)
         {
             foreach (Port port in container.Children())
             {
