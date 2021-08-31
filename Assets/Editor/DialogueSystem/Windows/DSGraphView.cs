@@ -241,6 +241,8 @@ namespace DS.Windows
         {
             string nodeName = node.DialogueName;
 
+            node.Group = group;
+
             if (!groupedNodes.ContainsKey(group))
             {
                 groupedNodes.Add(group, new SerializableDictionary<string, DSNodeErrorData>());
@@ -274,6 +276,8 @@ namespace DS.Windows
         public void RemoveGroupNode(DSNode node, Group group)
         {
             string nodeName = node.DialogueName;
+
+            node.Group = null;
 
             List<DSNode> groupedNodesList = groupedNodes[group][nodeName].Nodes;
 

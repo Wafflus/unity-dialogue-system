@@ -15,6 +15,7 @@ namespace DS.Elements
         public List<string> Choices { get; set; }
         public string Text { get; set; }
         public DSDialogueType DialogueType { get; set; }
+        public Group Group { get; set; }
 
         private DSGraphView graphView;
         private Color defaultBackgroundColor;
