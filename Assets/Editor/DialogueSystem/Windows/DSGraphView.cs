@@ -17,12 +17,14 @@ namespace DS.Windows
         private DSSearchWindow searchWindow;
 
         private SerializableDictionary<string, DSNodeErrorData> ungroupedNodes;
+        private SerializableDictionary<Group, SerializableDictionary<string, DSNodeErrorData>> groupedNodes;
 
         public DSGraphView(DSEditorWindow dsEditorWindow)
         {
             editorWindow = dsEditorWindow;
 
             ungroupedNodes = new SerializableDictionary<string, DSNodeErrorData>();
+            groupedNodes = new SerializableDictionary<Group, SerializableDictionary<string, DSNodeErrorData>>();
 
             AddManipulators();
             AddGridBackground();
