@@ -42,7 +42,7 @@ namespace DS.Windows
 
             fileNameTextField = DSElementUtility.CreateTextField(defaultFileName, "File Name:", callback =>
             {
-                fileNameTextField.value = callback.newValue.RemoveWhitespaces();
+                fileNameTextField.value = callback.newValue.RemoveWhitespaces().RemoveSpecialCharacters();
             });
 
             saveButton = DSElementUtility.CreateButton("Save");

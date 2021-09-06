@@ -287,7 +287,7 @@ namespace DS.Windows
             {
                 DSGroup dsGroup = (DSGroup) group;
 
-                dsGroup.title = newTitle.RemoveWhitespaces();
+                dsGroup.title = newTitle.RemoveWhitespaces().RemoveSpecialCharacters();
 
                 RemoveGroup(dsGroup);
 

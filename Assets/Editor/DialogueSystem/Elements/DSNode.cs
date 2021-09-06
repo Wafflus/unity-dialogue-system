@@ -52,7 +52,7 @@ namespace DS.Elements
             {
                 TextField target = (TextField) callback.target;
 
-                target.value = callback.newValue.RemoveWhitespaces();
+                target.value = callback.newValue.RemoveWhitespaces().RemoveSpecialCharacters();
 
                 if (Group == null)
                 {
