@@ -287,9 +287,11 @@ namespace DS.Windows
             {
                 DSGroup dsGroup = (DSGroup) group;
 
+                dsGroup.title = newTitle.RemoveWhitespaces().RemoveSpecialCharacters();
+
                 RemoveGroup(dsGroup);
 
-                dsGroup.OldTitle = newTitle;
+                dsGroup.OldTitle = dsGroup.title;
 
                 AddGroup(dsGroup);
             };
@@ -297,7 +299,7 @@ namespace DS.Windows
 
         public void AddUngroupedNode(DSNode node)
         {
-            string nodeName = node.DialogueName;
+            string nodeName = node.DialogueName.ToLower();
 
             if (!ungroupedNodes.ContainsKey(nodeName))
             {
@@ -328,7 +330,7 @@ namespace DS.Windows
 
         public void RemoveUngroupedNode(DSNode node)
         {
-            string nodeName = node.DialogueName;
+            string nodeName = node.DialogueName.ToLower();
 
             List<DSNode> ungroupedNodesList = ungroupedNodes[nodeName].Nodes;
 
@@ -353,7 +355,7 @@ namespace DS.Windows
 
         private void AddGroup(DSGroup group)
         {
-            string groupName = group.title;
+            string groupName = group.title.ToLower();
 
             if (!groups.ContainsKey(groupName))
             {
@@ -384,7 +386,7 @@ namespace DS.Windows
 
         private void RemoveGroup(DSGroup group)
         {
-            string oldGroupName = group.OldTitle;
+            string oldGroupName = group.OldTitle.ToLower();
 
             List<DSGroup> groupsList = groups[oldGroupName].Groups;
 
@@ -409,7 +411,7 @@ namespace DS.Windows
 
         public void AddGroupedNode(DSNode node, DSGroup group)
         {
-            string nodeName = node.DialogueName;
+            string nodeName = node.DialogueName.ToLower();
 
             node.Group = group;
 
@@ -447,7 +449,7 @@ namespace DS.Windows
 
         public void RemoveGroupedNode(DSNode node, DSGroup group)
         {
-            string nodeName = node.DialogueName;
+            string nodeName = node.DialogueName.ToLower();
 
             node.Group = null;
 
