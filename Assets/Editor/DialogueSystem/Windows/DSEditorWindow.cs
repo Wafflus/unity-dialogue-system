@@ -10,6 +10,7 @@ namespace DS.Windows
     {
         private readonly string defaultFileName = "DialoguesFileName";
 
+        private TextField fileNameTextField;
         private Button saveButton;
 
         [MenuItem("Window/DS/Dialogue Graph")]
@@ -39,7 +40,10 @@ namespace DS.Windows
         {
             Toolbar toolbar = new Toolbar();
 
-            TextField fileNameTextField = DSElementUtility.CreateTextField(defaultFileName, "File Name:");
+            fileNameTextField = DSElementUtility.CreateTextField(defaultFileName, "File Name:", callback =>
+            {
+                fileNameTextField.value = callback.newValue.RemoveWhitespaces();
+            });
 
             saveButton = DSElementUtility.CreateButton("Save");
 
