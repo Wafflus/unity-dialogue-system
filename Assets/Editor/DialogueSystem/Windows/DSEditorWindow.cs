@@ -46,6 +46,8 @@ namespace DS.Windows
             toolbar.Add(fileNameTextField);
             toolbar.Add(saveButton);
 
+            toolbar.AddStyleSheets("DialogueSystem/DSToolbarStyles.uss");
+
             rootVisualElement.Add(toolbar);
         }
 
