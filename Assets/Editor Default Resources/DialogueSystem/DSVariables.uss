@@ -17,11 +17,13 @@
 	--ds-metrics-window-pixels-0: 0px;
 	--ds-metrics-window-pixels-2: 2px;
 	--ds-metrics-window-pixels-4: 4px;
+	--ds-metrics-window-pixels-6: 6px;
 	--ds-metrics-window-pixels-8: 8px;
 	--ds-metrics-window-pixels-11: 11px;
 	--ds-metrics-window-pixels-16: 16px;
 	--ds-metrics-window-pixels-25: 25px;
 	--ds-metrics-window-pixels-35: 35px;
+	--ds-metrics-window-pixels-120: 120px;
 	--ds-metrics-window-pixels-160: 160px;
 	--ds-metrics-window-pixels-240: 240px;
 	--ds-metrics-window-pixels-600: 600px;
