@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -5,15 +6,16 @@ using UnityEngine.UIElements;
 
 namespace DS.Elements
 {
+    using Data.Save;
     using Enumerations;
-    using System;
     using Utilities;
     using Windows;
 
     public class DSNode : Node
     {
+        public string ID { get; set; }
         public string DialogueName { get; set; }
-        public List<string> Choices { get; set; }
+        public List<DSChoiceSaveData> Choices { get; set; }
         public string Text { get; set; }
         public DSDialogueType DialogueType { get; set; }
         public DSGroup Group { get; set; }
@@ -31,8 +33,10 @@ namespace DS.Elements
 
         public virtual void Initialize(DSGraphView dsGraphView, Vector2 position)
         {
+            ID = Guid.NewGuid().ToString();
+
             DialogueName = "DialogueName";
-            Choices = new List<string>();
+            Choices = new List<DSChoiceSaveData>();
             Text = "Dialogue text.";
 
             SetPosition(new Rect(position, Vector2.zero));

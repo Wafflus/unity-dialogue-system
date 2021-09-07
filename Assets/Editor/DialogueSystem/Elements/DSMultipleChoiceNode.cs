@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 
 namespace DS.Elements
 {
+    using Data.Save;
     using Enumerations;
     using Utilities;
     using Windows;
@@ -16,7 +17,12 @@ namespace DS.Elements
 
             DialogueType = DSDialogueType.MultipleChoice;
 
-            Choices.Add("New Choice");
+            DSChoiceSaveData choiceData = new DSChoiceSaveData()
+            {
+                Text = "New Choice"
+            };
+
+            Choices.Add(choiceData);
         }
 
         public override void Draw()
@@ -27,9 +33,14 @@ namespace DS.Elements
 
             Button addChoiceButton = DSElementUtility.CreateButton("Add Choice", () =>
             {
-                Port choicePort = CreateChoicePort("New Choice");
+                DSChoiceSaveData choiceData = new DSChoiceSaveData()
+                {
+                    Text = "New Choice"
+                };
 
-                Choices.Add("New Choice");
+                Choices.Add(choiceData);
+
+                Port choicePort = CreateChoicePort(choiceData.Text);
 
                 outputContainer.Add(choicePort);
             });
@@ -40,9 +51,9 @@ namespace DS.Elements
 
             /* OUTPUT CONTAINER */
 
-            foreach (string choice in Choices)
+            foreach (DSChoiceSaveData choice in Choices)
             {
-                Port choicePort = CreateChoicePort(choice);
+                Port choicePort = CreateChoicePort(choice.Text);
 
                 outputContainer.Add(choicePort);
             }
