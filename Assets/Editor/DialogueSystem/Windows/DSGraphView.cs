@@ -313,6 +313,26 @@ namespace DS.Windows
                         choiceData.NodeID = nextNode.ID;
                     }
                 }
+
+                if (changes.elementsToRemove != null)
+                {
+                    Type edgeType = typeof(Edge);
+
+                    foreach (GraphElement element in changes.elementsToRemove)
+                    {
+                        if (element.GetType() != edgeType)
+                        {
+                            continue;
+                        }
+
+                        Edge edge = (Edge) element;
+
+                        DSChoiceSaveData choiceData = (DSChoiceSaveData) edge.output.userData;
+
+                        choiceData.NodeID = "";
+                    }
+                }
+
                 return changes;
             };
         }
