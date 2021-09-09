@@ -62,6 +62,7 @@ namespace DS.Windows
             OnGroupElementsAdded();
             OnGroupElementsRemoved();
             OnGroupRenamed();
+            OnGraphViewChanged();
 
             AddStyles();
         }
