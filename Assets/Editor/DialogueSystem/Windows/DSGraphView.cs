@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 namespace DS.Windows
 {
     using Data.Error;
+    using Data.Save;
     using Elements;
     using Enumerations;
     using Utilities;
@@ -294,6 +295,25 @@ namespace DS.Windows
                 dsGroup.OldTitle = dsGroup.title;
 
                 AddGroup(dsGroup);
+            };
+        }
+
+        private void OnGraphViewChanged()
+        {
+            graphViewChanged = (changes) =>
+            {
+                if (changes.edgesToCreate != null)
+                {
+                    foreach (Edge edge in changes.edgesToCreate)
+                    {
+                        DSNode nextNode = (DSNode) edge.input.node;
+
+                        DSChoiceSaveData choiceData = (DSChoiceSaveData) edge.output.userData;
+
+                        choiceData.NodeID = nextNode.ID;
+                    }
+                }
+                return changes;
             };
         }
 
