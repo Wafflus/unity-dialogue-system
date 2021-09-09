@@ -40,7 +40,7 @@ namespace DS.Elements
 
                 Choices.Add(choiceData);
 
-                Port choicePort = CreateChoicePort(choiceData.Text);
+                Port choicePort = CreateChoicePort(choiceData);
 
                 outputContainer.Add(choicePort);
             });
@@ -53,7 +53,7 @@ namespace DS.Elements
 
             foreach (DSChoiceSaveData choice in Choices)
             {
-                Port choicePort = CreateChoicePort(choice.Text);
+                Port choicePort = CreateChoicePort(choice);
 
                 outputContainer.Add(choicePort);
             }
@@ -61,15 +61,37 @@ namespace DS.Elements
             RefreshExpandedState();
         }
 
-        private Port CreateChoicePort(string choice)
+        private Port CreateChoicePort(object userData)
         {
             Port choicePort = this.CreatePort();
 
-            Button deleteChoiceButton = DSElementUtility.CreateButton("X");
+            choicePort.userData = userData;
+
+            DSChoiceSaveData choiceData = (DSChoiceSaveData) userData;
+
+            Button deleteChoiceButton = DSElementUtility.CreateButton("X", () =>
+            {
+                if (Choices.Count == 1)
+                {
+                    return;
+                }
+
+                if (choicePort.connected)
+                {
+                    graphView.DeleteElements(choicePort.connections);
+                }
+
+                Choices.Remove(choiceData);
+
+                graphView.RemoveElement(choicePort);
+            });
 
             deleteChoiceButton.AddToClassList("ds-node__button");
 
-            TextField choiceTextField = DSElementUtility.CreateTextField(choice);
+            TextField choiceTextField = DSElementUtility.CreateTextField(choiceData.Text, null, callback =>
+            {
+                choiceData.Text = callback.newValue;
+            });
 
             choiceTextField.AddClasses(
                 "ds-node__text-field",

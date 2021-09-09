@@ -20,7 +20,7 @@ namespace DS.Elements
         public DSDialogueType DialogueType { get; set; }
         public DSGroup Group { get; set; }
 
-        private DSGraphView graphView;
+        protected DSGraphView graphView;
         private Color defaultBackgroundColor;
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)

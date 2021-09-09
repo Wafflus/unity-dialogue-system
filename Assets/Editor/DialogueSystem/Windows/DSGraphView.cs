@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 namespace DS.Windows
 {
     using Data.Error;
+    using Data.Save;
     using Elements;
     using Enumerations;
     using Utilities;
@@ -61,6 +62,7 @@ namespace DS.Windows
             OnGroupElementsAdded();
             OnGroupElementsRemoved();
             OnGroupRenamed();
+            OnGraphViewChanged();
 
             AddStyles();
         }
@@ -294,6 +296,45 @@ namespace DS.Windows
                 dsGroup.OldTitle = dsGroup.title;
 
                 AddGroup(dsGroup);
+            };
+        }
+
+        private void OnGraphViewChanged()
+        {
+            graphViewChanged = (changes) =>
+            {
+                if (changes.edgesToCreate != null)
+                {
+                    foreach (Edge edge in changes.edgesToCreate)
+                    {
+                        DSNode nextNode = (DSNode) edge.input.node;
+
+                        DSChoiceSaveData choiceData = (DSChoiceSaveData) edge.output.userData;
+
+                        choiceData.NodeID = nextNode.ID;
+                    }
+                }
+
+                if (changes.elementsToRemove != null)
+                {
+                    Type edgeType = typeof(Edge);
+
+                    foreach (GraphElement element in changes.elementsToRemove)
+                    {
+                        if (element.GetType() != edgeType)
+                        {
+                            continue;
+                        }
+
+                        Edge edge = (Edge) element;
+
+                        DSChoiceSaveData choiceData = (DSChoiceSaveData) edge.output.userData;
+
+                        choiceData.NodeID = "";
+                    }
+                }
+
+                return changes;
             };
         }
 
