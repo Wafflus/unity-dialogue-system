@@ -88,7 +88,10 @@ namespace DS.Elements
 
             deleteChoiceButton.AddToClassList("ds-node__button");
 
-            TextField choiceTextField = DSElementUtility.CreateTextField(choiceData.Text);
+            TextField choiceTextField = DSElementUtility.CreateTextField(choiceData.Text, null, callback =>
+            {
+                choiceData.Text = callback.newValue;
+            });
 
             choiceTextField.AddClasses(
                 "ds-node__text-field",
