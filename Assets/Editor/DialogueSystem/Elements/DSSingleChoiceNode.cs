@@ -34,6 +34,8 @@ namespace DS.Elements
             {
                 Port choicePort = this.CreatePort(choice.Text);
 
+                choicePort.userData = choice;
+
                 outputContainer.Add(choicePort);
             }
 
