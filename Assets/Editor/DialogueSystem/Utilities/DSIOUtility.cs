@@ -7,6 +7,7 @@ namespace DS.Utilities
 {
     using Data.Save;
     using Elements;
+    using ScriptableObjects;
     using Windows;
 
     public static class DSIOUtility
@@ -39,6 +40,10 @@ namespace DS.Utilities
             DSGraphSaveDataSO graphData = CreateAsset<DSGraphSaveDataSO>("Assets/Editor/DialogueSystem/Graphs", $"{graphFileName}Graph");
 
             graphData.Initialize(graphFileName);
+
+            DSDialogueContainerSO dialogueContainer = CreateAsset<DSDialogueContainerSO>(containerFolderPath, graphFileName);
+
+            dialogueContainer.Initialize(graphFileName);
         }
 
         private static void CreateDefaultFolders()
