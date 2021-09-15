@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace DS.Utilities
 {
+    using Data.Save;
     using Elements;
     using Windows;
 
@@ -34,6 +35,10 @@ namespace DS.Utilities
             CreateDefaultFolders();
 
             GetElementsFromGraphView();
+
+            DSGraphSaveDataSO graphData = CreateAsset<DSGraphSaveDataSO>("Assets/Editor/DialogueSystem/Graphs", $"{graphFileName}Graph");
+
+            graphData.Initialize(graphFileName);
         }
 
         private static void CreateDefaultFolders()
