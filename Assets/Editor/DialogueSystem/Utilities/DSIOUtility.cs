@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -82,6 +81,22 @@ namespace DS.Utilities
             }
 
             AssetDatabase.CreateFolder(parentFolderPath, newFolderName);
+        }
+
+        private static T CreateAsset<T>(string path, string assetName) where T : ScriptableObject
+        {
+            string fullPath = $"{path}/{assetName}.asset";
+
+            T asset = AssetDatabase.LoadAssetAtPath<T>(fullPath);
+
+            if (asset == null)
+            {
+                asset = ScriptableObject.CreateInstance<T>();
+
+                AssetDatabase.CreateAsset(asset, fullPath);
+            }
+
+            return asset;
         }
     }
 }
