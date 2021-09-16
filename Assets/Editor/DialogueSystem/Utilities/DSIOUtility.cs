@@ -44,6 +44,12 @@ namespace DS.Utilities
             DSDialogueContainerSO dialogueContainer = CreateAsset<DSDialogueContainerSO>(containerFolderPath, graphFileName);
 
             dialogueContainer.Initialize(graphFileName);
+
+            SaveGroups(graphData, dialogueContainer);
+        }
+
+        private static void SaveGroups(DSGraphSaveDataSO graphData, DSDialogueContainerSO dialogueContainer)
+        {
         }
 
         private static void CreateDefaultFolders()
