@@ -145,5 +145,13 @@ namespace DS.Utilities
 
             return asset;
         }
+
+        private static void SaveAsset(UnityEngine.Object asset)
+        {
+            EditorUtility.SetDirty(asset);
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+        }
     }
 }
