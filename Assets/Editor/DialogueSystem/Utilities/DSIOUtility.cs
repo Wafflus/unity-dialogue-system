@@ -91,6 +91,39 @@ namespace DS.Utilities
 
         private static void SaveNodes(DSGraphSaveDataSO graphData, DSDialogueContainerSO dialogueContainer)
         {
+            foreach (DSNode node in nodes)
+            {
+                SaveNodeToGraph(node, graphData);
+            }
+        }
+
+        private static void SaveNodeToGraph(DSNode node, DSGraphSaveDataSO graphData)
+        {
+            List<DSChoiceSaveData> choices = new List<DSChoiceSaveData>();
+
+            foreach (DSChoiceSaveData choice in node.Choices)
+            {
+                DSChoiceSaveData choiceData = new DSChoiceSaveData()
+                {
+                    Text = choice.Text,
+                    NodeID = choice.NodeID
+                };
+
+                choices.Add(choiceData);
+            }
+
+            DSNodeSaveData nodeData = new DSNodeSaveData()
+            {
+                ID = node.ID,
+                Name = node.DialogueName,
+                Choices = choices,
+                Text = node.Text,
+                GroupID = node.Group?.ID,
+                DialogueType = node.DialogueType,
+                Position = node.GetPosition().position
+            };
+
+            graphData.Nodes.Add(nodeData);
         }
 
         private static void CreateDefaultFolders()
