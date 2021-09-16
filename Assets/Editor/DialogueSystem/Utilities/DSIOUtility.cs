@@ -53,6 +53,7 @@ namespace DS.Utilities
             foreach (DSGroup group in groups)
             {
                 SaveGroupToGraph(group, graphData);
+                SaveGroupToScriptableObject(group, dialogueContainer);
             }
         }
 
@@ -66,6 +67,20 @@ namespace DS.Utilities
             };
 
             graphData.Groups.Add(groupData);
+        }
+
+        private static void SaveGroupToScriptableObject(DSGroup group, DSDialogueContainerSO dialogueContainer)
+        {
+            string groupName = group.title;
+
+            CreateFolder($"{containerFolderPath}/Groups", groupName);
+            CreateFolder($"{containerFolderPath}/Groups/{groupName}", "Dialogues");
+
+            DSDialogueGroupSO dialogueGroup = CreateAsset<DSDialogueGroupSO>($"{containerFolderPath}/Groups/{groupName}", groupName);
+
+            dialogueGroup.Initialize(groupName);
+
+            dialogueContainer.DialogueGroups.Add(dialogueGroup, new List<DSDialogueSO>());
         }
 
         private static void CreateDefaultFolders()
