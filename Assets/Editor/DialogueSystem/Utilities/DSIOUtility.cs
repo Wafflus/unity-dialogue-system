@@ -50,6 +50,22 @@ namespace DS.Utilities
 
         private static void SaveGroups(DSGraphSaveDataSO graphData, DSDialogueContainerSO dialogueContainer)
         {
+            foreach (DSGroup group in groups)
+            {
+                SaveGroupToGraph(group, graphData);
+            }
+        }
+
+        private static void SaveGroupToGraph(DSGroup group, DSGraphSaveDataSO graphData)
+        {
+            DSGroupSaveData groupData = new DSGroupSaveData()
+            {
+                ID = group.ID,
+                Name = group.title,
+                Position = group.GetPosition().position
+            };
+
+            graphData.Groups.Add(groupData);
         }
 
         private static void CreateDefaultFolders()
