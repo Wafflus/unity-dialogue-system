@@ -46,6 +46,9 @@ namespace DS.Utilities
             dialogueContainer.Initialize(graphFileName);
 
             SaveGroups(graphData, dialogueContainer);
+
+            SaveAsset(graphData);
+            SaveAsset(dialogueContainer);
         }
 
         private static void SaveGroups(DSGraphSaveDataSO graphData, DSDialogueContainerSO dialogueContainer)
@@ -81,6 +84,8 @@ namespace DS.Utilities
             dialogueGroup.Initialize(groupName);
 
             dialogueContainer.DialogueGroups.Add(dialogueGroup, new List<DSDialogueSO>());
+
+            SaveAsset(dialogueGroup);
         }
 
         private static void CreateDefaultFolders()
