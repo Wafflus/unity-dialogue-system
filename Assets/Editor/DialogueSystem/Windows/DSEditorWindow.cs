@@ -50,7 +50,7 @@ namespace DS.Windows
 
             saveButton = DSElementUtility.CreateButton("Save", () => Save());
 
-            Button clearButton = DSElementUtility.CreateButton("Clear");
+            Button clearButton = DSElementUtility.CreateButton("Clear", () => Clear());
 
             toolbar.Add(fileNameTextField);
             toolbar.Add(saveButton);
@@ -77,6 +77,11 @@ namespace DS.Windows
 
             DSIOUtility.Initialize(graphView, fileNameTextField.value);
             DSIOUtility.Save();
+        }
+
+        private void Clear()
+        {
+            graphView.ClearGraph();
         }
 
         public void EnableSaving()
