@@ -51,7 +51,7 @@ namespace DS.Windows
             saveButton = DSElementUtility.CreateButton("Save", () => Save());
 
             Button clearButton = DSElementUtility.CreateButton("Clear", () => Clear());
-            Button resetButton = DSElementUtility.CreateButton("Reset");
+            Button resetButton = DSElementUtility.CreateButton("Reset", () => ResetGraph());
 
             toolbar.Add(fileNameTextField);
             toolbar.Add(saveButton);
@@ -84,6 +84,13 @@ namespace DS.Windows
         private void Clear()
         {
             graphView.ClearGraph();
+        }
+
+        private void ResetGraph()
+        {
+            Clear();
+
+            UpdateFileName(defaultFileName);
         }
 
         public static void UpdateFileName(string newFileName)
