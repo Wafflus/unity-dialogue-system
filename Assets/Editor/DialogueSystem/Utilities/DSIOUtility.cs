@@ -6,6 +6,7 @@ using UnityEngine;
 namespace DS.Utilities
 {
     using Data.Save;
+    using DS.Data;
     using Elements;
     using ScriptableObjects;
     using Windows;
@@ -20,6 +21,8 @@ namespace DS.Utilities
         private static List<DSNode> nodes;
         private static List<DSGroup> groups;
 
+        private static Dictionary<string, DSDialogueGroupSO> createdDialogueGroups;
+
         public static void Initialize(DSGraphView dsGraphView, string graphName)
         {
             graphView = dsGraphView;
@@ -29,6 +32,8 @@ namespace DS.Utilities
 
             nodes = new List<DSNode>();
             groups = new List<DSGroup>();
+
+            createdDialogueGroups = new Dictionary<string, DSDialogueGroupSO>();
         }
 
         public static void Save()
@@ -84,6 +89,8 @@ namespace DS.Utilities
 
             dialogueGroup.Initialize(groupName);
 
+            createdDialogueGroups.Add(group.ID, dialogueGroup);
+
             dialogueContainer.DialogueGroups.Add(dialogueGroup, new List<DSDialogueSO>());
 
             SaveAsset(dialogueGroup);
@@ -94,6 +101,7 @@ namespace DS.Utilities
             foreach (DSNode node in nodes)
             {
                 SaveNodeToGraph(node, graphData);
+                SaveNodeToScriptableObject(node, dialogueContainer);
             }
         }
 
@@ -124,6 +132,51 @@ namespace DS.Utilities
             };
 
             graphData.Nodes.Add(nodeData);
+        }
+
+        private static void SaveNodeToScriptableObject(DSNode node, DSDialogueContainerSO dialogueContainer)
+        {
+            DSDialogueSO dialogue;
+
+            if (node.Group != null)
+            {
+                dialogue = CreateAsset<DSDialogueSO>($"{containerFolderPath}/Groups/{node.Group.title}/Dialogues", node.DialogueName);
+
+                dialogueContainer.DialogueGroups.AddItem(createdDialogueGroups[node.Group.ID], dialogue);
+            }
+            else
+            {
+                dialogue = CreateAsset<DSDialogueSO>($"{containerFolderPath}/Global/Dialogues", node.DialogueName);
+
+                dialogueContainer.UngroupedDialogues.Add(dialogue);
+            }
+
+            dialogue.Initialize(
+                node.DialogueName,
+                node.Text,
+                ConvertNodeChoicesToDialogueChoices(node.Choices),
+                node.DialogueType,
+                node.IsStartingNode()
+            );
+
+            SaveAsset(dialogue);
+        }
+
+        private static List<DSDialogueChoiceData> ConvertNodeChoicesToDialogueChoices(List<DSChoiceSaveData> nodeChoices)
+        {
+            List<DSDialogueChoiceData> dialogueChoices = new List<DSDialogueChoiceData>();
+
+            foreach (DSChoiceSaveData nodeChoice in nodeChoices)
+            {
+                DSDialogueChoiceData choiceData = new DSDialogueChoiceData()
+                {
+                    Text = nodeChoice.Text
+                };
+
+                dialogueChoices.Add(choiceData);
+            }
+
+            return dialogueChoices;
         }
 
         private static void CreateDefaultFolders()
