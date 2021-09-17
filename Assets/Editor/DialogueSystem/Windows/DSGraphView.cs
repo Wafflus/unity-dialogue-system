@@ -21,25 +21,25 @@ namespace DS.Windows
         private SerializableDictionary<string, DSGroupErrorData> groups;
         private SerializableDictionary<Group, SerializableDictionary<string, DSNodeErrorData>> groupedNodes;
 
-        private int repeatedFileNames;
+        private int nameErrorsAmount;
 
-        public int RepeatedFileNames
+        public int NameErrorsAmount
         {
             get
             {
-                return repeatedFileNames;
+                return nameErrorsAmount;
             }
 
             set
             {
-                repeatedFileNames = value;
+                nameErrorsAmount = value;
 
-                if (repeatedFileNames == 0)
+                if (nameErrorsAmount == 0)
                 {
                     editorWindow.EnableSaving();
                 }
 
-                if (repeatedFileNames == 1)
+                if (nameErrorsAmount == 1)
                 {
                     editorWindow.DisableSaving();
                 }
@@ -291,6 +291,21 @@ namespace DS.Windows
 
                 dsGroup.title = newTitle.RemoveWhitespaces().RemoveSpecialCharacters();
 
+                if (string.IsNullOrEmpty(dsGroup.title))
+                {
+                    if (!string.IsNullOrEmpty(dsGroup.OldTitle))
+                    {
+                        ++NameErrorsAmount;
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(dsGroup.OldTitle))
+                    {
+                        --NameErrorsAmount;
+                    }
+                }
+
                 RemoveGroup(dsGroup);
 
                 dsGroup.OldTitle = dsGroup.title;
@@ -363,7 +378,7 @@ namespace DS.Windows
 
             if (ungroupedNodesList.Count == 2)
             {
-                ++RepeatedFileNames;
+                ++NameErrorsAmount;
 
                 ungroupedNodesList[0].SetErrorStyle(errorColor);
             }
@@ -381,7 +396,7 @@ namespace DS.Windows
 
             if (ungroupedNodesList.Count == 1)
             {
-                --RepeatedFileNames;
+                --NameErrorsAmount;
 
                 ungroupedNodesList[0].ResetStyle();
 
@@ -419,7 +434,7 @@ namespace DS.Windows
 
             if (groupsList.Count == 2)
             {
-                ++RepeatedFileNames;
+                ++NameErrorsAmount;
 
                 groupsList[0].SetErrorStyle(errorColor);
             }
@@ -437,7 +452,7 @@ namespace DS.Windows
 
             if (groupsList.Count == 1)
             {
-                --RepeatedFileNames;
+                --NameErrorsAmount;
 
                 groupsList[0].ResetStyle();
 
@@ -482,7 +497,7 @@ namespace DS.Windows
 
             if (groupedNodesList.Count == 2)
             {
-                ++RepeatedFileNames;
+                ++NameErrorsAmount;
 
                 groupedNodesList[0].SetErrorStyle(errorColor);
             }
@@ -502,7 +517,7 @@ namespace DS.Windows
 
             if (groupedNodesList.Count == 1)
             {
-                --RepeatedFileNames;
+                --NameErrorsAmount;
 
                 groupedNodesList[0].ResetStyle();
 
