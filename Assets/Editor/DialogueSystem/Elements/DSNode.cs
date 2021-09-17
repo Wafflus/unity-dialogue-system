@@ -8,6 +8,7 @@ namespace DS.Elements
 {
     using Data.Save;
     using Enumerations;
+    using System.Linq;
     using Utilities;
     using Windows;
 
@@ -141,6 +142,13 @@ namespace DS.Elements
 
                 graphView.DeleteElements(port.connections);
             }
+        }
+
+        public bool IsStartingNode()
+        {
+            Port inputPort = (Port) inputContainer.Children().First();
+
+            return !inputPort.connected;
         }
 
         public void SetErrorStyle(Color color)
