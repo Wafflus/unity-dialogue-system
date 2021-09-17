@@ -62,11 +62,17 @@ namespace DS.Utilities
 
         private static void SaveGroups(DSGraphSaveDataSO graphData, DSDialogueContainerSO dialogueContainer)
         {
+            List<string> groupNames = new List<string>();
+
             foreach (DSGroup group in groups)
             {
                 SaveGroupToGraph(group, graphData);
                 SaveGroupToScriptableObject(group, dialogueContainer);
+
+                groupNames.Add(group.title);
             }
+
+            UpdateOldGroups(groupNames, graphData);
         }
 
         private static void SaveGroupToGraph(DSGroup group, DSGraphSaveDataSO graphData)
@@ -97,6 +103,21 @@ namespace DS.Utilities
             dialogueContainer.DialogueGroups.Add(dialogueGroup, new List<DSDialogueSO>());
 
             SaveAsset(dialogueGroup);
+        }
+
+        private static void UpdateOldGroups(List<string> currentGroupNames, DSGraphSaveDataSO graphData)
+        {
+            if (graphData.OldGroupNames != null && graphData.OldGroupNames.Count != 0)
+            {
+                List<string> groupsToRemove = graphData.OldGroupNames.Except(currentGroupNames).ToList();
+
+                foreach (string groupToRemove in groupsToRemove)
+                {
+                    RemoveFolder($"{containerFolderPath}/Groups/{groupToRemove}");
+                }
+            }
+
+            graphData.OldGroupNames = new List<string>(currentGroupNames);
         }
 
         private static void SaveNodes(DSGraphSaveDataSO graphData, DSDialogueContainerSO dialogueContainer)
