@@ -51,10 +51,12 @@ namespace DS.Windows
             saveButton = DSElementUtility.CreateButton("Save", () => Save());
 
             Button clearButton = DSElementUtility.CreateButton("Clear", () => Clear());
+            Button resetButton = DSElementUtility.CreateButton("Reset");
 
             toolbar.Add(fileNameTextField);
             toolbar.Add(saveButton);
             toolbar.Add(clearButton);
+            toolbar.Add(resetButton);
 
             toolbar.AddStyleSheets("DialogueSystem/DSToolbarStyles.uss");
 
