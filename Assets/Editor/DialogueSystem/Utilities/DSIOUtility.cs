@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
 namespace DS.Utilities
 {
+    using Data;
     using Data.Save;
-    using DS.Data;
     using Elements;
     using ScriptableObjects;
     using Windows;
@@ -22,6 +23,7 @@ namespace DS.Utilities
         private static List<DSGroup> groups;
 
         private static Dictionary<string, DSDialogueGroupSO> createdDialogueGroups;
+        private static Dictionary<string, DSDialogueSO> createdDialogues;
 
         public static void Initialize(DSGraphView dsGraphView, string graphName)
         {
@@ -34,6 +36,7 @@ namespace DS.Utilities
             groups = new List<DSGroup>();
 
             createdDialogueGroups = new Dictionary<string, DSDialogueGroupSO>();
+            createdDialogues = new Dictionary<string, DSDialogueSO>();
         }
 
         public static void Save()
@@ -103,6 +106,8 @@ namespace DS.Utilities
                 SaveNodeToGraph(node, graphData);
                 SaveNodeToScriptableObject(node, dialogueContainer);
             }
+
+            UpdateDialoguesChoicesConnections();
         }
 
         private static void SaveNodeToGraph(DSNode node, DSGraphSaveDataSO graphData)
@@ -159,6 +164,8 @@ namespace DS.Utilities
                 node.IsStartingNode()
             );
 
+            createdDialogues.Add(node.ID, dialogue);
+
             SaveAsset(dialogue);
         }
 
@@ -177,6 +184,28 @@ namespace DS.Utilities
             }
 
             return dialogueChoices;
+        }
+
+        private static void UpdateDialoguesChoicesConnections()
+        {
+            foreach (DSNode node in nodes)
+            {
+                DSDialogueSO dialogue = createdDialogues[node.ID];
+
+                for (int choiceIndex = 0; choiceIndex < node.Choices.Count; ++choiceIndex)
+                {
+                    DSChoiceSaveData nodeChoice = node.Choices[choiceIndex];
+
+                    if (string.IsNullOrEmpty(nodeChoice.NodeID))
+                    {
+                        continue;
+                    }
+
+                    dialogue.Choices[choiceIndex].NextDialogue = createdDialogues[nodeChoice.NodeID];
+
+                    SaveAsset(dialogue);
+                }
+            }
         }
 
         private static void CreateDefaultFolders()
