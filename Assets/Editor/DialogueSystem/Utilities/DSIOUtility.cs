@@ -255,6 +255,12 @@ namespace DS.Utilities
             AssetDatabase.CreateFolder(parentFolderPath, newFolderName);
         }
 
+        private static void RemoveFolder(string path)
+        {
+            FileUtil.DeleteFileOrDirectory($"{path}.meta");
+            FileUtil.DeleteFileOrDirectory($"{path}/");
+        }
+
         private static T CreateAsset<T>(string path, string assetName) where T : ScriptableObject
         {
             string fullPath = $"{path}/{assetName}.asset";
