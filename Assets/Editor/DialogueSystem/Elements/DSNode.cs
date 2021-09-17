@@ -116,7 +116,7 @@ namespace DS.Elements
 
             Foldout textFoldout = DSElementUtility.CreateFoldout("Dialogue Text");
 
-            TextField textTextField = DSElementUtility.CreateTextArea(Text);
+            TextField textTextField = DSElementUtility.CreateTextArea(Text, null, callback => Text = callback.newValue);
 
             textTextField.AddClasses(
                 "ds-node__text-field",
