@@ -13,7 +13,7 @@ namespace DS.Windows
 
         private readonly string defaultFileName = "DialoguesFileName";
 
-        private TextField fileNameTextField;
+        private static TextField fileNameTextField;
         private Button saveButton;
 
         [MenuItem("Window/DS/Dialogue Graph")]
@@ -84,6 +84,11 @@ namespace DS.Windows
         private void Clear()
         {
             graphView.ClearGraph();
+        }
+
+        public static void UpdateFileName(string newFileName)
+        {
+            fileNameTextField.value = newFileName;
         }
 
         public void EnableSaving()
