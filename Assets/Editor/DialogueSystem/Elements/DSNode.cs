@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -8,7 +9,6 @@ namespace DS.Elements
 {
     using Data.Save;
     using Enumerations;
-    using System.Linq;
     using Utilities;
     using Windows;
 
@@ -58,6 +58,21 @@ namespace DS.Elements
                 TextField target = (TextField) callback.target;
 
                 target.value = callback.newValue.RemoveWhitespaces().RemoveSpecialCharacters();
+
+                if (string.IsNullOrEmpty(target.value))
+                {
+                    if (!string.IsNullOrEmpty(DialogueName))
+                    {
+                        ++graphView.NameErrorsAmount;
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(DialogueName))
+                    {
+                        --graphView.NameErrorsAmount;
+                    }
+                }
 
                 if (Group == null)
                 {
