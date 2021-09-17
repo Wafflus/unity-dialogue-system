@@ -122,6 +122,7 @@ namespace DS.Utilities
 
         private static void SaveNodes(DSGraphSaveDataSO graphData, DSDialogueContainerSO dialogueContainer)
         {
+            SerializableDictionary<string, List<string>> groupedNodeNames = new SerializableDictionary<string, List<string>>();
             List<string> ungroupedNodeNames = new List<string>();
 
             foreach (DSNode node in nodes)
@@ -129,11 +130,19 @@ namespace DS.Utilities
                 SaveNodeToGraph(node, graphData);
                 SaveNodeToScriptableObject(node, dialogueContainer);
 
+                if (node.Group != null)
+                {
+                    groupedNodeNames.AddItem(node.Group.title, node.DialogueName);
+
+                    continue;
+                }
+
                 ungroupedNodeNames.Add(node.DialogueName);
             }
 
             UpdateDialoguesChoicesConnections();
 
+            UpdateOldGroupedNodes(groupedNodeNames, graphData);
             UpdateOldUngroupedNodes(ungroupedNodeNames, graphData);
         }
 
@@ -233,6 +242,29 @@ namespace DS.Utilities
                     SaveAsset(dialogue);
                 }
             }
+        }
+
+        private static void UpdateOldGroupedNodes(SerializableDictionary<string, List<string>> currentGroupedNodeNames, DSGraphSaveDataSO graphData)
+        {
+            if (graphData.OldGroupedNodeNames != null && graphData.OldGroupedNodeNames.Count != 0)
+            {
+                foreach (KeyValuePair<string, List<string>> oldGroupedNode in graphData.OldGroupedNodeNames)
+                {
+                    List<string> nodesToRemove = new List<string>();
+
+                    if (currentGroupedNodeNames.ContainsKey(oldGroupedNode.Key))
+                    {
+                        nodesToRemove = oldGroupedNode.Value.Except(currentGroupedNodeNames[oldGroupedNode.Key]).ToList();
+                    }
+
+                    foreach (string nodeToRemove in nodesToRemove)
+                    {
+                        RemoveAsset($"{containerFolderPath}/Groups/{oldGroupedNode.Key}/Dialogues", nodeToRemove);
+                    }
+                }
+            }
+
+            graphData.OldGroupedNodeNames = new SerializableDictionary<string, List<string>>(currentGroupedNodeNames);
         }
 
         private static void UpdateOldUngroupedNodes(List<string> currentUngroupedNodeNames, DSGraphSaveDataSO graphData)
