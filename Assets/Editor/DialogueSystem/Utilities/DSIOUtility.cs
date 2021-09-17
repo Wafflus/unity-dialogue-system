@@ -305,5 +305,10 @@ namespace DS.Utilities
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
+
+        private static void RemoveAsset(string path, string assetName)
+        {
+            AssetDatabase.DeleteAsset($"{path}/{assetName}.asset");
+        }
     }
 }
