@@ -122,13 +122,19 @@ namespace DS.Utilities
 
         private static void SaveNodes(DSGraphSaveDataSO graphData, DSDialogueContainerSO dialogueContainer)
         {
+            List<string> ungroupedNodeNames = new List<string>();
+
             foreach (DSNode node in nodes)
             {
                 SaveNodeToGraph(node, graphData);
                 SaveNodeToScriptableObject(node, dialogueContainer);
+
+                ungroupedNodeNames.Add(node.DialogueName);
             }
 
             UpdateDialoguesChoicesConnections();
+
+            UpdateOldUngroupedNodes(ungroupedNodeNames, graphData);
         }
 
         private static void SaveNodeToGraph(DSNode node, DSGraphSaveDataSO graphData)
@@ -227,6 +233,21 @@ namespace DS.Utilities
                     SaveAsset(dialogue);
                 }
             }
+        }
+
+        private static void UpdateOldUngroupedNodes(List<string> currentUngroupedNodeNames, DSGraphSaveDataSO graphData)
+        {
+            if (graphData.OldUngroupedNodeNames != null && graphData.OldUngroupedNodeNames.Count != 0)
+            {
+                List<string> nodesToRemove = graphData.OldUngroupedNodeNames.Except(currentUngroupedNodeNames).ToList();
+
+                foreach (string nodeToRemove in nodesToRemove)
+                {
+                    RemoveAsset($"{containerFolderPath}/Global/Dialogues", nodeToRemove);
+                }
+            }
+
+            graphData.OldUngroupedNodeNames = new List<string>(currentUngroupedNodeNames);
         }
 
         private static void CreateDefaultFolders()
