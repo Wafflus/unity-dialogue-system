@@ -149,14 +149,18 @@ namespace DS.Windows
             return group;
         }
 
-        public DSNode CreateNode(DSDialogueType dialogueType, Vector2 position)
+        public DSNode CreateNode(DSDialogueType dialogueType, Vector2 position, bool shouldDraw = true)
         {
             Type nodeType = Type.GetType($"DS.Elements.DS{dialogueType}Node");
 
             DSNode node = (DSNode) Activator.CreateInstance(nodeType);
 
             node.Initialize(this, position);
-            node.Draw();
+
+            if (shouldDraw)
+            {
+                node.Draw();
+            }
 
             AddUngroupedNode(node);
 
