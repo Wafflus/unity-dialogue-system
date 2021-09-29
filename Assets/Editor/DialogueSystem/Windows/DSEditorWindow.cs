@@ -1,10 +1,10 @@
+using System.IO;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 namespace DS.Windows
 {
-    using System;
     using Utilities;
 
     public class DSEditorWindow : EditorWindow
@@ -78,6 +78,21 @@ namespace DS.Windows
             }
 
             DSIOUtility.Initialize(graphView, fileNameTextField.value);
+            DSIOUtility.Save();
+        }
+
+        private void Load()
+        {
+            string filePath = EditorUtility.OpenFilePanel("Dialogue Graphs", "Assets/Editor/DialogueSystem/Graphs", "asset");
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return;
+            }
+
+            Clear();
+
+            DSIOUtility.Initialize(graphView, Path.GetFileNameWithoutExtension(filePath));
             DSIOUtility.Save();
         }
 
