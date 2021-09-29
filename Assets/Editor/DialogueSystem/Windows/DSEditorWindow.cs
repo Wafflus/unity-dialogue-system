@@ -1,10 +1,10 @@
+using System.IO;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 namespace DS.Windows
 {
-    using System;
     using Utilities;
 
     public class DSEditorWindow : EditorWindow
@@ -50,11 +50,13 @@ namespace DS.Windows
 
             saveButton = DSElementUtility.CreateButton("Save", () => Save());
 
+            Button loadButton = DSElementUtility.CreateButton("Load", () => Load());
             Button clearButton = DSElementUtility.CreateButton("Clear", () => Clear());
             Button resetButton = DSElementUtility.CreateButton("Reset", () => ResetGraph());
 
             toolbar.Add(fileNameTextField);
             toolbar.Add(saveButton);
+            toolbar.Add(loadButton);
             toolbar.Add(clearButton);
             toolbar.Add(resetButton);
 
@@ -79,6 +81,21 @@ namespace DS.Windows
 
             DSIOUtility.Initialize(graphView, fileNameTextField.value);
             DSIOUtility.Save();
+        }
+
+        private void Load()
+        {
+            string filePath = EditorUtility.OpenFilePanel("Dialogue Graphs", "Assets/Editor/DialogueSystem/Graphs", "asset");
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return;
+            }
+
+            Clear();
+
+            DSIOUtility.Initialize(graphView, Path.GetFileNameWithoutExtension(filePath));
+            DSIOUtility.Load();
         }
 
         private void Clear()
