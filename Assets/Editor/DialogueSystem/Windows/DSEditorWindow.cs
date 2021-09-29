@@ -50,11 +50,13 @@ namespace DS.Windows
 
             saveButton = DSElementUtility.CreateButton("Save", () => Save());
 
+            Button loadButton = DSElementUtility.CreateButton("Load", () => Load());
             Button clearButton = DSElementUtility.CreateButton("Clear", () => Clear());
             Button resetButton = DSElementUtility.CreateButton("Reset", () => ResetGraph());
 
             toolbar.Add(fileNameTextField);
             toolbar.Add(saveButton);
+            toolbar.Add(loadButton);
             toolbar.Add(clearButton);
             toolbar.Add(resetButton);
 
