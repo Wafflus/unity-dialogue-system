@@ -298,6 +298,8 @@ namespace DS.Utilities
 
                 return;
             }
+
+            DSEditorWindow.UpdateFileName(graphData.FileName);
         }
 
         private static void CreateDefaultFolders()
