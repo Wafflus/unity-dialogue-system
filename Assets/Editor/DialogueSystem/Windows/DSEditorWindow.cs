@@ -95,7 +95,7 @@ namespace DS.Windows
             Clear();
 
             DSIOUtility.Initialize(graphView, Path.GetFileNameWithoutExtension(filePath));
-            DSIOUtility.Save();
+            DSIOUtility.Load();
         }
 
         private void Clear()

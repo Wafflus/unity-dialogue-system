@@ -320,10 +320,9 @@ namespace DS.Utilities
             {
                 List<DSChoiceSaveData> choices = CloneNodeChoices(nodeData.Choices);
 
-                DSNode node = graphView.CreateNode(nodeData.DialogueType, nodeData.Position);
+                DSNode node = graphView.CreateNode(nodeData.Name, nodeData.DialogueType, nodeData.Position, false);
 
                 node.ID = nodeData.ID;
-                node.DialogueName = nodeData.Name;
                 node.Choices = choices;
                 node.Text = nodeData.Text;
 
