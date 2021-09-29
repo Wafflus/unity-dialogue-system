@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace DS.Utilities
@@ -298,6 +299,7 @@ namespace DS.Utilities
 
             LoadGroups(graphData.Groups);
             LoadNodes(graphData.Nodes);
+            LoadNodesConnections();
         }
 
         private static void LoadGroups(List<DSGroupSaveData> groups)
@@ -329,6 +331,8 @@ namespace DS.Utilities
 
                 graphView.AddElement(node);
 
+                loadedNodes.Add(node.ID, node);
+
                 if (string.IsNullOrEmpty(nodeData.GroupID))
                 {
                     continue;
@@ -339,6 +343,32 @@ namespace DS.Utilities
                 node.Group = group;
 
                 group.AddElement(node);
+            }
+        }
+
+        private static void LoadNodesConnections()
+        {
+            foreach (KeyValuePair<string, DSNode> loadedNode in loadedNodes)
+            {
+                foreach (Port choicePort in loadedNode.Value.outputContainer.Children())
+                {
+                    DSChoiceSaveData choiceData = (DSChoiceSaveData) choicePort.userData;
+
+                    if (string.IsNullOrEmpty(choiceData.NodeID))
+                    {
+                        continue;
+                    }
+
+                    DSNode nextNode = loadedNodes[choiceData.NodeID];
+
+                    Port nextNodeInputPort = (Port) nextNode.inputContainer.Children().First();
+
+                    Edge edge = choicePort.ConnectTo(nextNodeInputPort);
+
+                    graphView.AddElement(edge);
+
+                    loadedNode.Value.RefreshPorts();
+                }
             }
         }
 
