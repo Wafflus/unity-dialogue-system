@@ -282,6 +282,11 @@ namespace DS.Utilities
             graphData.OldUngroupedNodeNames = new List<string>(currentUngroupedNodeNames);
         }
 
+        public static void Load()
+        {
+
+        }
+
         private static void CreateDefaultFolders()
         {
             CreateFolder("Assets/Editor/DialogueSystem", "Graphs");
