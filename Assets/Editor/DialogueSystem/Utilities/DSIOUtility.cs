@@ -152,18 +152,7 @@ namespace DS.Utilities
 
         private static void SaveNodeToGraph(DSNode node, DSGraphSaveDataSO graphData)
         {
-            List<DSChoiceSaveData> choices = new List<DSChoiceSaveData>();
-
-            foreach (DSChoiceSaveData choice in node.Choices)
-            {
-                DSChoiceSaveData choiceData = new DSChoiceSaveData()
-                {
-                    Text = choice.Text,
-                    NodeID = choice.NodeID
-                };
-
-                choices.Add(choiceData);
-            }
+            List<DSChoiceSaveData> choices = CloneNodeChoices(node.Choices);
 
             DSNodeSaveData nodeData = new DSNodeSaveData()
             {
@@ -407,6 +396,24 @@ namespace DS.Utilities
         private static void RemoveAsset(string path, string assetName)
         {
             AssetDatabase.DeleteAsset($"{path}/{assetName}.asset");
+        }
+
+        private static List<DSChoiceSaveData> CloneNodeChoices(List<DSChoiceSaveData> nodeChoices)
+        {
+            List<DSChoiceSaveData> choices = new List<DSChoiceSaveData>();
+
+            foreach (DSChoiceSaveData choice in nodeChoices)
+            {
+                DSChoiceSaveData choiceData = new DSChoiceSaveData()
+                {
+                    Text = choice.Text,
+                    NodeID = choice.NodeID
+                };
+
+                choices.Add(choiceData);
+            }
+
+            return choices;
         }
     }
 }
