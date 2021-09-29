@@ -284,7 +284,20 @@ namespace DS.Utilities
 
         public static void Load()
         {
+            DSGraphSaveDataSO graphData = LoadAsset<DSGraphSaveDataSO>("Assets/Editor/DialogueSystem/Graphs", graphFileName);
 
+            if (graphData == null)
+            {
+                EditorUtility.DisplayDialog(
+                    "Could not find the file!",
+                    "The file at the following path could not be found:\n\n" +
+                    $"\"Assets/Editor/DialogueSystem/Graphs/{graphFileName}\".\n\n" +
+                    "Make sure you chose the right file and it's placed at the folder path mentioned above.",
+                    "Thanks!"
+                );
+
+                return;
+            }
         }
 
         private static void CreateDefaultFolders()
