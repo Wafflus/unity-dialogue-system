@@ -25,6 +25,8 @@ namespace DS.Utilities
         private static Dictionary<string, DSDialogueGroupSO> createdDialogueGroups;
         private static Dictionary<string, DSDialogueSO> createdDialogues;
 
+        private static Dictionary<string, DSGroup> loadedGroups;
+
         public static void Initialize(DSGraphView dsGraphView, string graphName)
         {
             graphView = dsGraphView;
@@ -37,6 +39,8 @@ namespace DS.Utilities
 
             createdDialogueGroups = new Dictionary<string, DSDialogueGroupSO>();
             createdDialogues = new Dictionary<string, DSDialogueSO>();
+
+            loadedGroups = new Dictionary<string, DSGroup>();
         }
 
         public static void Save()
@@ -300,6 +304,20 @@ namespace DS.Utilities
             }
 
             DSEditorWindow.UpdateFileName(graphData.FileName);
+
+            LoadGroups(graphData.Groups);
+        }
+
+        private static void LoadGroups(List<DSGroupSaveData> groups)
+        {
+            foreach (DSGroupSaveData groupData in groups)
+            {
+                DSGroup group = graphView.CreateGroup(groupData.Name, groupData.Position);
+
+                group.ID = groupData.ID;
+
+                loadedGroups.Add(group.ID, group);
+            }
         }
 
         private static void CreateDefaultFolders()
