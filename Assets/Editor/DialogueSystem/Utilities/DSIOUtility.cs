@@ -26,6 +26,7 @@ namespace DS.Utilities
         private static Dictionary<string, DSDialogueSO> createdDialogues;
 
         private static Dictionary<string, DSGroup> loadedGroups;
+        private static Dictionary<string, DSNode> loadedNodes;
 
         public static void Initialize(DSGraphView dsGraphView, string graphName)
         {
@@ -41,6 +42,7 @@ namespace DS.Utilities
             createdDialogues = new Dictionary<string, DSDialogueSO>();
 
             loadedGroups = new Dictionary<string, DSGroup>();
+            loadedNodes = new Dictionary<string, DSNode>();
         }
 
         public static void Save()
@@ -295,6 +297,7 @@ namespace DS.Utilities
             DSEditorWindow.UpdateFileName(graphData.FileName);
 
             LoadGroups(graphData.Groups);
+            LoadNodes(graphData.Nodes);
         }
 
         private static void LoadGroups(List<DSGroupSaveData> groups)
@@ -306,6 +309,36 @@ namespace DS.Utilities
                 group.ID = groupData.ID;
 
                 loadedGroups.Add(group.ID, group);
+            }
+        }
+
+        private static void LoadNodes(List<DSNodeSaveData> nodes)
+        {
+            foreach (DSNodeSaveData nodeData in nodes)
+            {
+                List<DSChoiceSaveData> choices = CloneNodeChoices(nodeData.Choices);
+
+                DSNode node = graphView.CreateNode(nodeData.DialogueType, nodeData.Position);
+
+                node.ID = nodeData.ID;
+                node.DialogueName = nodeData.Name;
+                node.Choices = choices;
+                node.Text = nodeData.Text;
+
+                node.Draw();
+
+                graphView.AddElement(node);
+
+                if (string.IsNullOrEmpty(nodeData.GroupID))
+                {
+                    continue;
+                }
+
+                DSGroup group = loadedGroups[nodeData.GroupID];
+
+                node.Group = group;
+
+                group.AddElement(node);
             }
         }
 
