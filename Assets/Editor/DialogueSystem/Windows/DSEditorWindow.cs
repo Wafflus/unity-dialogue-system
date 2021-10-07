@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 
 namespace DS.Windows
 {
+    using System;
     using Utilities;
 
     public class DSEditorWindow : EditorWindow
@@ -15,6 +16,7 @@ namespace DS.Windows
 
         private static TextField fileNameTextField;
         private Button saveButton;
+        private Button miniMapButton;
 
         [MenuItem("Window/DS/Dialogue Graph")]
         public static void Open()
@@ -54,11 +56,14 @@ namespace DS.Windows
             Button clearButton = DSElementUtility.CreateButton("Clear", () => Clear());
             Button resetButton = DSElementUtility.CreateButton("Reset", () => ResetGraph());
 
+            miniMapButton = DSElementUtility.CreateButton("Minimap", () => ToggleMiniMap());
+
             toolbar.Add(fileNameTextField);
             toolbar.Add(saveButton);
             toolbar.Add(loadButton);
             toolbar.Add(clearButton);
             toolbar.Add(resetButton);
+            toolbar.Add(miniMapButton);
 
             toolbar.AddStyleSheets("DialogueSystem/DSToolbarStyles.uss");
 
@@ -108,6 +113,13 @@ namespace DS.Windows
             Clear();
 
             UpdateFileName(defaultFileName);
+        }
+
+        private void ToggleMiniMap()
+        {
+            graphView.ToggleMiniMap();
+
+            miniMapButton.ToggleInClassList("ds-toolbar__button__selected");
         }
 
         public static void UpdateFileName(string newFileName)
