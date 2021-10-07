@@ -620,5 +620,10 @@ namespace DS.Windows
 
             NameErrorsAmount = 0;
         }
+
+        public void ToggleMiniMap()
+        {
+            miniMap.visible = !miniMap.visible;
+        }
     }
 }
