@@ -57,6 +57,7 @@ namespace DS.Windows
             AddManipulators();
             AddGridBackground();
             AddSearchWindow();
+            AddMiniMap();
 
             OnElementsDeleted();
             OnGroupElementsAdded();
@@ -558,6 +559,18 @@ namespace DS.Windows
             searchWindow.Initialize(this);
 
             nodeCreationRequest = context => SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), searchWindow);
+        }
+
+        private void AddMiniMap()
+        {
+            MiniMap miniMap = new MiniMap()
+            {
+                anchored = true
+            };
+
+            miniMap.SetPosition(new Rect(15, 50, 200, 180));
+
+            Add(miniMap);
         }
 
         private void AddStyles()
