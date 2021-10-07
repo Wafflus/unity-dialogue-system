@@ -17,6 +17,8 @@ namespace DS.Windows
         private DSEditorWindow editorWindow;
         private DSSearchWindow searchWindow;
 
+        private MiniMap miniMap;
+
         private SerializableDictionary<string, DSNodeErrorData> ungroupedNodes;
         private SerializableDictionary<string, DSGroupErrorData> groups;
         private SerializableDictionary<Group, SerializableDictionary<string, DSNodeErrorData>> groupedNodes;
@@ -66,6 +68,7 @@ namespace DS.Windows
             OnGraphViewChanged();
 
             AddStyles();
+            AddMiniMapStyles();
         }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
@@ -563,7 +566,7 @@ namespace DS.Windows
 
         private void AddMiniMap()
         {
-            MiniMap miniMap = new MiniMap()
+            miniMap = new MiniMap()
             {
                 anchored = true
             };
@@ -579,6 +582,18 @@ namespace DS.Windows
                 "DialogueSystem/DSGraphViewStyles.uss",
                 "DialogueSystem/DSNodeStyles.uss"
             );
+        }
+
+        private void AddMiniMapStyles()
+        {
+            StyleColor backgroundColor = new StyleColor(new Color32(29, 29, 30, 255));
+            StyleColor borderColor = new StyleColor(new Color32(51, 51, 51, 255));
+
+            miniMap.style.backgroundColor = backgroundColor;
+            miniMap.style.borderTopColor = borderColor;
+            miniMap.style.borderRightColor = borderColor;
+            miniMap.style.borderBottomColor = borderColor;
+            miniMap.style.borderLeftColor = borderColor;
         }
 
         public Vector2 GetLocalMousePosition(Vector2 mousePosition, bool isSearchWindow = false)
