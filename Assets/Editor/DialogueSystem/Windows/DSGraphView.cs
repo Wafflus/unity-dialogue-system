@@ -17,6 +17,8 @@ namespace DS.Windows
         private DSEditorWindow editorWindow;
         private DSSearchWindow searchWindow;
 
+        private MiniMap miniMap;
+
         private SerializableDictionary<string, DSNodeErrorData> ungroupedNodes;
         private SerializableDictionary<string, DSGroupErrorData> groups;
         private SerializableDictionary<Group, SerializableDictionary<string, DSNodeErrorData>> groupedNodes;
@@ -57,6 +59,7 @@ namespace DS.Windows
             AddManipulators();
             AddGridBackground();
             AddSearchWindow();
+            AddMiniMap();
 
             OnElementsDeleted();
             OnGroupElementsAdded();
@@ -65,6 +68,7 @@ namespace DS.Windows
             OnGraphViewChanged();
 
             AddStyles();
+            AddMiniMapStyles();
         }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
@@ -560,12 +564,38 @@ namespace DS.Windows
             nodeCreationRequest = context => SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), searchWindow);
         }
 
+        private void AddMiniMap()
+        {
+            miniMap = new MiniMap()
+            {
+                anchored = true
+            };
+
+            miniMap.SetPosition(new Rect(15, 50, 200, 180));
+
+            Add(miniMap);
+
+            miniMap.visible = false;
+        }
+
         private void AddStyles()
         {
             this.AddStyleSheets(
                 "DialogueSystem/DSGraphViewStyles.uss",
                 "DialogueSystem/DSNodeStyles.uss"
             );
+        }
+
+        private void AddMiniMapStyles()
+        {
+            StyleColor backgroundColor = new StyleColor(new Color32(29, 29, 30, 255));
+            StyleColor borderColor = new StyleColor(new Color32(51, 51, 51, 255));
+
+            miniMap.style.backgroundColor = backgroundColor;
+            miniMap.style.borderTopColor = borderColor;
+            miniMap.style.borderRightColor = borderColor;
+            miniMap.style.borderBottomColor = borderColor;
+            miniMap.style.borderLeftColor = borderColor;
         }
 
         public Vector2 GetLocalMousePosition(Vector2 mousePosition, bool isSearchWindow = false)
@@ -591,6 +621,11 @@ namespace DS.Windows
             ungroupedNodes.Clear();
 
             NameErrorsAmount = 0;
+        }
+
+        public void ToggleMiniMap()
+        {
+            miniMap.visible = !miniMap.visible;
         }
     }
 }
