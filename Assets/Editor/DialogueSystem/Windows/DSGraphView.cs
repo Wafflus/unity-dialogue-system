@@ -574,6 +574,8 @@ namespace DS.Windows
             miniMap.SetPosition(new Rect(15, 50, 200, 180));
 
             Add(miniMap);
+
+            miniMap.visible = false;
         }
 
         private void AddStyles()
