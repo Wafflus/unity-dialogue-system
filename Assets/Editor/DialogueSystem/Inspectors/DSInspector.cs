@@ -86,5 +86,12 @@ namespace DS.Inspectors
 
             dialogueProperty.DrawPropertyField();
         }
+
+        private void StopDrawing(string reason)
+        {
+            DSInspectorUtility.DrawHelpBox(reason);
+
+            serializedObject.ApplyModifiedProperties();
+        }
     }
 }
