@@ -39,6 +39,13 @@ namespace DS.Inspectors
 
             DrawDialogueContainerArea();
 
+            if (dialogueContainerProperty.objectReferenceValue == null)
+            {
+                StopDrawing("Select a Dialogue Container to see the rest of the Inspector.");
+
+                return;
+            }
+
             DrawFiltersArea();
 
             DrawDialogueGroupArea();
