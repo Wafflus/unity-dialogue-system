@@ -27,6 +27,8 @@ namespace DS.Inspectors
         public override void OnInspectorGUI()
         {
             DrawDialogueContainerArea();
+
+            DrawFiltersArea();
         }
 
         private void DrawDialogueContainerArea()
@@ -34,6 +36,14 @@ namespace DS.Inspectors
             EditorGUILayout.LabelField("Dialogue Container", EditorStyles.boldLabel);
 
             EditorGUILayout.PropertyField(dialogueContainerProperty);
+        }
+
+        private void DrawFiltersArea()
+        {
+            EditorGUILayout.LabelField("Filters", EditorStyles.boldLabel);
+
+            EditorGUILayout.PropertyField(groupedDialoguesProperty);
+            EditorGUILayout.PropertyField(startingDialoguesOnlyProperty);
         }
     }
 }
