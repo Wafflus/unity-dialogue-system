@@ -85,19 +85,19 @@ namespace DS.Inspectors
 
                 DSDialogueGroupSO dialogueGroup = (DSDialogueGroupSO) dialogueGroupProperty.objectReferenceValue;
 
-                dialogueNames = currentDialogueContainer.GetGroupedDialogueNames(dialogueGroup);
+                dialogueNames = currentDialogueContainer.GetGroupedDialogueNames(dialogueGroup, currentStartingDialoguesOnlyFilter);
 
                 dialogueFolderPath += $"/Groups/{dialogueGroup.GroupName}/Dialogues";
 
-                dialogueInfoMessage = "There are no Dialogues in this Dialogue Group.";
+                dialogueInfoMessage = "There are no" + (currentStartingDialoguesOnlyFilter ? " Starting" : "") + " Dialogues in this Dialogue Group.";
             }
             else
             {
-                dialogueNames = currentDialogueContainer.GetUngroupedDialogueNames();
+                dialogueNames = currentDialogueContainer.GetUngroupedDialogueNames(currentStartingDialoguesOnlyFilter);
 
                 dialogueFolderPath += "/Global/Dialogues";
 
-                dialogueInfoMessage = "There are no Ungrouped Dialogues in this Dialogue Container.";
+                dialogueInfoMessage = "There are no" + (currentStartingDialoguesOnlyFilter ? " Starting" : "") + "  Ungrouped Dialogues in this Dialogue Container.";
             }
 
             if (dialogueNames.Count == 0)
