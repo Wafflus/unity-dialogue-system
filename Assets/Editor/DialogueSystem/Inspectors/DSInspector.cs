@@ -92,6 +92,13 @@ namespace DS.Inspectors
                 dialogueInfoMessage = "There are no Ungrouped Dialogues in this Dialogue Container.";
             }
 
+            if (dialogueNames.Count == 0)
+            {
+                StopDrawing(dialogueInfoMessage);
+
+                return;
+            }
+
             DrawDialogueArea();
 
             serializedObject.ApplyModifiedProperties();
