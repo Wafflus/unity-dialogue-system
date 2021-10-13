@@ -33,6 +33,8 @@ namespace DS.Inspectors
 
         public override void OnInspectorGUI()
         {
+            serializedObject.Update();
+
             DrawDialogueContainerArea();
 
             DrawFiltersArea();
@@ -40,6 +42,8 @@ namespace DS.Inspectors
             DrawDialogueGroupArea();
 
             DrawDialogueArea();
+
+            serializedObject.ApplyModifiedProperties();
         }
 
         private void DrawDialogueContainerArea()
