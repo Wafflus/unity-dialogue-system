@@ -97,7 +97,7 @@ namespace DS.Inspectors
 
                 dialogueFolderPath += "/Global/Dialogues";
 
-                dialogueInfoMessage = "There are no" + (currentStartingDialoguesOnlyFilter ? " Starting" : "") + "  Ungrouped Dialogues in this Dialogue Container.";
+                dialogueInfoMessage = "There are no" + (currentStartingDialoguesOnlyFilter ? " Starting" : "") + " Ungrouped Dialogues in this Dialogue Container.";
             }
 
             if (dialogueNames.Count == 0)
