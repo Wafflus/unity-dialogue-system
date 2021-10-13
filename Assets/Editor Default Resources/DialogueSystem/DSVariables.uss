@@ -1,0 +1,31 @@
+:root
+{
+	--ds-colors-grid-light-grey-1: #2b2b2b;
+	--ds-colors-grid-light-grey-2: rgba(51, 51, 51, 0.4);
+	--ds-colors-grid-light-grey-3: rgba(51, 51, 51, 1);
+	--ds-colors-window-dark-grey-1: #1D1D1E;
+	--ds-colors-window-dark-grey-2: #2B2D2F;
+	--ds-colors-window-dark-grey-3: #212325;
+	--ds-colors-window-dark-grey-4: #232527;
+	--ds-colors-window-dark-grey-5: #252729;
+	--ds-colors-window-dark-grey-6: #27292C;
+	--ds-colors-window-yellow: #FDD057;
+
+	--ds-metrics-grid-25: 25;
+	--ds-metrics-window-pixels-n12: -12px;
+	--ds-metrics-window-pixels-n4: -4px;
+	--ds-metrics-window-pixels-0: 0px;
+	--ds-metrics-window-pixels-2: 2px;
+	--ds-metrics-window-pixels-4: 4px;
+	--ds-metrics-window-pixels-6: 6px;
+	--ds-metrics-window-pixels-8: 8px;
+	--ds-metrics-window-pixels-11: 11px;
+	--ds-metrics-window-pixels-16: 16px;
+	--ds-metrics-window-pixels-25: 25px;
+	--ds-metrics-window-pixels-35: 35px;
+	--ds-metrics-window-pixels-120: 120px;
+	--ds-metrics-window-pixels-160: 160px;
+	--ds-metrics-window-pixels-240: 240px;
+	--ds-metrics-window-pixels-600: 600px;
+	--ds-metrics-window-pixels-1000: 1000px;
+}
