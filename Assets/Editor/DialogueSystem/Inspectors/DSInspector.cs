@@ -85,7 +85,11 @@ namespace DS.Inspectors
             }
             else
             {
+                dialogueNames = currentDialogueContainer.GetUngroupedDialogueNames();
 
+                dialogueFolderPath += "/Global/Dialogues";
+
+                dialogueInfoMessage = "There are no Ungrouped Dialogues in this Dialogue Container.";
             }
 
             DrawDialogueArea();
