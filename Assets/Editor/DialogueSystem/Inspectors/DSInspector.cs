@@ -47,6 +47,8 @@ namespace DS.Inspectors
             EditorGUILayout.LabelField("Dialogue Container", EditorStyles.boldLabel);
 
             EditorGUILayout.PropertyField(dialogueContainerProperty);
+
+            EditorGUILayout.Space(4);
         }
 
         private void DrawFiltersArea()
@@ -55,6 +57,8 @@ namespace DS.Inspectors
 
             EditorGUILayout.PropertyField(groupedDialoguesProperty);
             EditorGUILayout.PropertyField(startingDialoguesOnlyProperty);
+
+            EditorGUILayout.Space(4);
         }
 
         private void DrawDialogueGroupArea()
@@ -64,6 +68,8 @@ namespace DS.Inspectors
             selectedDialogueGroupIndexProperty.intValue = EditorGUILayout.Popup("Dialogue Group", selectedDialogueGroupIndexProperty.intValue, new string[] { });
 
             EditorGUILayout.PropertyField(dialogueGroupProperty);
+
+            EditorGUILayout.Space(4);
         }
 
         private void DrawDialogueArea()
