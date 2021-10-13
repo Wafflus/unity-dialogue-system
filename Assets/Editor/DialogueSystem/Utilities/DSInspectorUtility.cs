@@ -1,9 +1,19 @@
+using System;
 using UnityEditor;
 
 namespace DS.Utilities
 {
     public static class DSInspectorUtility
     {
+        public static void DrawDisabledFields(Action action)
+        {
+            EditorGUI.BeginDisabledGroup(true);
+
+            action.Invoke();
+
+            EditorGUI.EndDisabledGroup();
+        }
+
         public static void DrawHeader(string label)
         {
             EditorGUILayout.LabelField(label, EditorStyles.boldLabel);
