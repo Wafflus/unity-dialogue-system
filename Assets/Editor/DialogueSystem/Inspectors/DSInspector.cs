@@ -99,7 +99,7 @@ namespace DS.Inspectors
                 return;
             }
 
-            DrawDialogueArea();
+            DrawDialogueArea(dialogueNames, dialogueFolderPath);
 
             serializedObject.ApplyModifiedProperties();
         }
@@ -143,11 +143,11 @@ namespace DS.Inspectors
             DSInspectorUtility.DrawSpace();
         }
 
-        private void DrawDialogueArea()
+        private void DrawDialogueArea(List<string> dialogueNames)
         {
             DSInspectorUtility.DrawHeader("Dialogue");
 
-            selectedDialogueIndexProperty.intValue = DSInspectorUtility.DrawPopup("Dialogue", selectedDialogueIndexProperty, new string[] { });
+            selectedDialogueIndexProperty.intValue = DSInspectorUtility.DrawPopup("Dialogue", selectedDialogueIndexProperty, dialogueNames.ToArray());
 
             dialogueProperty.DrawPropertyField();
         }
