@@ -9,6 +9,11 @@ namespace DS.Utilities
             EditorGUILayout.LabelField(label, EditorStyles.boldLabel);
         }
 
+        public static void DrawHelpBox(string message, MessageType messageType = MessageType.Info, bool wide = true)
+        {
+            EditorGUILayout.HelpBox(message, messageType, wide);
+        }
+
         public static int DrawPopup(string label, SerializedProperty selectedIndexProperty, string[] options)
         {
             return EditorGUILayout.Popup(label, selectedIndexProperty.intValue, options);
