@@ -146,7 +146,7 @@ namespace DS.Inspectors
 
             dialogueGroupProperty.objectReferenceValue = selectedDialogueGroup;
 
-            dialogueGroupProperty.DrawPropertyField();
+            DSInspectorUtility.DrawDisabledFields(() => dialogueGroupProperty.DrawPropertyField());
 
             DSInspectorUtility.DrawSpace();
         }
@@ -163,7 +163,7 @@ namespace DS.Inspectors
 
             dialogueProperty.objectReferenceValue = selectedDialogue;
 
-            dialogueProperty.DrawPropertyField();
+            DSInspectorUtility.DrawDisabledFields(() => dialogueProperty.DrawPropertyField());
         }
 
         private void StopDrawing(string reason)
