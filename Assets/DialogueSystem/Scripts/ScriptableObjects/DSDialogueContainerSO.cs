@@ -29,7 +29,7 @@ namespace DS.ScriptableObjects
             return dialogueGroupNames;
         }
 
-        public List<string> GetGroupedDialogueNames(DSDialogueGroupSO dialogueGroup)
+        public List<string> GetGroupedDialogueNames(DSDialogueGroupSO dialogueGroup, bool startingDialoguesOnly)
         {
             List<DSDialogueSO> groupedDialogues = DialogueGroups[dialogueGroup];
 
@@ -37,6 +37,11 @@ namespace DS.ScriptableObjects
 
             foreach (DSDialogueSO groupedDialogue in groupedDialogues)
             {
+                if (startingDialoguesOnly && !groupedDialogue.IsStartingDialogue)
+                {
+                    continue;
+                }
+
                 groupedDialogueNames.Add(groupedDialogue.DialogueName);
             }
 
