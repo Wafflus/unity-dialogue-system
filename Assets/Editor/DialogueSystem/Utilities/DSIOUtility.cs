@@ -408,7 +408,7 @@ namespace DS.Utilities
             });
         }
 
-        private static void CreateFolder(string parentFolderPath, string newFolderName)
+        public static void CreateFolder(string parentFolderPath, string newFolderName)
         {
             if (AssetDatabase.IsValidFolder($"{parentFolderPath}/{newFolderName}"))
             {
@@ -418,13 +418,13 @@ namespace DS.Utilities
             AssetDatabase.CreateFolder(parentFolderPath, newFolderName);
         }
 
-        private static void RemoveFolder(string path)
+        public static void RemoveFolder(string path)
         {
             FileUtil.DeleteFileOrDirectory($"{path}.meta");
             FileUtil.DeleteFileOrDirectory($"{path}/");
         }
 
-        private static T CreateAsset<T>(string path, string assetName) where T : ScriptableObject
+        public static T CreateAsset<T>(string path, string assetName) where T : ScriptableObject
         {
             string fullPath = $"{path}/{assetName}.asset";
 
@@ -440,14 +440,14 @@ namespace DS.Utilities
             return asset;
         }
 
-        private static T LoadAsset<T>(string path, string assetName) where T : ScriptableObject
+        public static T LoadAsset<T>(string path, string assetName) where T : ScriptableObject
         {
             string fullPath = $"{path}/{assetName}.asset";
 
             return AssetDatabase.LoadAssetAtPath<T>(fullPath);
         }
 
-        private static void SaveAsset(UnityEngine.Object asset)
+        public static void SaveAsset(UnityEngine.Object asset)
         {
             EditorUtility.SetDirty(asset);
 
@@ -455,7 +455,7 @@ namespace DS.Utilities
             AssetDatabase.Refresh();
         }
 
-        private static void RemoveAsset(string path, string assetName)
+        public static void RemoveAsset(string path, string assetName)
         {
             AssetDatabase.DeleteAsset($"{path}/{assetName}.asset");
         }
