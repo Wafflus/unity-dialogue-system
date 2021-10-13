@@ -63,7 +63,7 @@ namespace DS.Inspectors
                     return;
                 }
 
-                DrawDialogueGroupArea(dialogueGroupNames);
+                DrawDialogueGroupArea(dialogueContainer, dialogueGroupNames);
             }
 
             DrawDialogueArea();
@@ -90,11 +90,17 @@ namespace DS.Inspectors
             DSInspectorUtility.DrawSpace();
         }
 
-        private void DrawDialogueGroupArea(List<string> dialogueGroupNames)
+        private void DrawDialogueGroupArea(DSDialogueContainerSO dialogueContainer, List<string> dialogueGroupNames)
         {
             DSInspectorUtility.DrawHeader("Dialogue Group");
 
             selectedDialogueGroupIndexProperty.intValue = DSInspectorUtility.DrawPopup("Dialogue Group", selectedDialogueGroupIndexProperty, dialogueGroupNames.ToArray());
+
+            string selectedDialogueGroupName = dialogueGroupNames[selectedDialogueGroupIndexProperty.intValue];
+
+            DSDialogueGroupSO selectedDialogueGroup = DSIOUtility.LoadAsset<DSDialogueGroupSO>($"Assets/DialogueSystem/Dialogues/{dialogueContainer.FileName}/Groups/{selectedDialogueGroupName}", selectedDialogueGroupName);
+
+            dialogueGroupProperty.objectReferenceValue = selectedDialogueGroup;
 
             dialogueGroupProperty.DrawPropertyField();
 
