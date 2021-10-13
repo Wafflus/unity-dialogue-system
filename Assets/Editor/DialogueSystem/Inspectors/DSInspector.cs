@@ -166,9 +166,9 @@ namespace DS.Inspectors
             DSInspectorUtility.DrawDisabledFields(() => dialogueProperty.DrawPropertyField());
         }
 
-        private void StopDrawing(string reason)
+        private void StopDrawing(string reason, MessageType messageType = MessageType.Info)
         {
-            DSInspectorUtility.DrawHelpBox(reason);
+            DSInspectorUtility.DrawHelpBox(reason, messageType);
 
             DSInspectorUtility.DrawSpace();
 
