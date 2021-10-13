@@ -66,8 +66,6 @@ namespace DS.Inspectors
 
                     return;
                 }
-
-                DrawDialogueGroupArea(currentDialogueContainer, dialogueGroupNames);
             }
 
             DrawDialogueArea();
@@ -102,7 +100,10 @@ namespace DS.Inspectors
 
             string selectedDialogueGroupName = dialogueGroupNames[selectedDialogueGroupIndexProperty.intValue];
 
+            DSDialogueGroupSO oldDialogueGroup = (DSDialogueGroupSO) dialogueGroupProperty.objectReferenceValue;
             DSDialogueGroupSO selectedDialogueGroup = DSIOUtility.LoadAsset<DSDialogueGroupSO>($"Assets/DialogueSystem/Dialogues/{dialogueContainer.FileName}/Groups/{selectedDialogueGroupName}", selectedDialogueGroupName);
+            
+            ResetIndexOnDialogueGroupUpdate(oldDialogueGroup, selectedDialogueGroup);
 
             dialogueGroupProperty.objectReferenceValue = selectedDialogueGroup;
 
@@ -132,6 +133,14 @@ namespace DS.Inspectors
             if (oldDialogueContainer != currentDialogueContainer)
             {
                 selectedDialogueGroupIndexProperty.intValue = 0;
+                selectedDialogueIndexProperty.intValue = 0;
+            }
+        }
+
+        private void ResetIndexOnDialogueGroupUpdate(DSDialogueGroupSO oldDialogueGroup, DSDialogueGroupSO selectedDialogueGroup)
+        {
+            if (oldDialogueGroup != selectedDialogueGroup)
+            {
                 selectedDialogueIndexProperty.intValue = 0;
             }
         }
