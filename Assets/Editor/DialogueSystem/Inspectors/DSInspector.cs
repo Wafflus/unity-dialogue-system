@@ -43,20 +43,22 @@ namespace DS.Inspectors
 
             DrawDialogueContainerArea();
 
-            DSDialogueContainerSO dialogueContainer = (DSDialogueContainerSO) dialogueContainerProperty.objectReferenceValue;
+            DSDialogueContainerSO currentDialogueContainer = (DSDialogueContainerSO) dialogueContainerProperty.objectReferenceValue;
 
-            if (dialogueContainer == null)
+            if (currentDialogueContainer == null)
             {
                 StopDrawing("Select a Dialogue Container to see the rest of the Inspector.");
 
                 return;
             }
 
+            ResetIndexesOnDialogueContainerUpdate(oldDialogueContainer, currentDialogueContainer);
+
             DrawFiltersArea();
 
             if (groupedDialoguesProperty.boolValue)
             {
-                List<string> dialogueGroupNames = dialogueContainer.GetDialogueGroupNames();
+                List<string> dialogueGroupNames = currentDialogueContainer.GetDialogueGroupNames();
 
                 if (dialogueGroupNames.Count == 0)
                 {
@@ -65,7 +67,7 @@ namespace DS.Inspectors
                     return;
                 }
 
-                DrawDialogueGroupArea(dialogueContainer, dialogueGroupNames);
+                DrawDialogueGroupArea(currentDialogueContainer, dialogueGroupNames);
             }
 
             DrawDialogueArea();
@@ -123,6 +125,15 @@ namespace DS.Inspectors
             DSInspectorUtility.DrawHelpBox(reason);
 
             serializedObject.ApplyModifiedProperties();
+        }
+
+        private void ResetIndexesOnDialogueContainerUpdate(DSDialogueContainerSO oldDialogueContainer, DSDialogueContainerSO currentDialogueContainer)
+        {
+            if (oldDialogueContainer != currentDialogueContainer)
+            {
+                selectedDialogueGroupIndexProperty.intValue = 0;
+                selectedDialogueIndexProperty.intValue = 0;
+            }
         }
     }
 }
