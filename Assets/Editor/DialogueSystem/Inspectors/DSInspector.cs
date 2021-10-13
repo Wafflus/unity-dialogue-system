@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor;
 
 namespace DS.Inspectors
@@ -53,6 +54,15 @@ namespace DS.Inspectors
 
             if (groupedDialoguesProperty.boolValue)
             {
+                List<string> dialogueGroupNames = dialogueContainer.GetDialogueGroupNames();
+
+                if (dialogueGroupNames.Count == 0)
+                {
+                    StopDrawing("There are no Dialogue Groups in this Dialogue Container");
+
+                    return;
+                }
+
                 DrawDialogueGroupArea();
             }
 
