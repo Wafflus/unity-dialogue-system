@@ -14,6 +14,10 @@ namespace DS.Inspectors
         private SerializedProperty groupedDialoguesProperty;
         private SerializedProperty startingDialoguesOnlyProperty;
 
+        /* Indexes */
+        private SerializedProperty selectedDialogueGroupIndexProperty;
+        private SerializedProperty selectedDialogueIndexProperty;
+
         private void OnEnable()
         {
             dialogueContainerProperty = serializedObject.FindProperty("dialogueContainer");
@@ -22,6 +26,9 @@ namespace DS.Inspectors
 
             groupedDialoguesProperty = serializedObject.FindProperty("groupedDialogues");
             startingDialoguesOnlyProperty = serializedObject.FindProperty("startingDialoguesOnly");
+
+            selectedDialogueGroupIndexProperty = serializedObject.FindProperty("selectedDialogueGroupIndex");
+            selectedDialogueIndexProperty = serializedObject.FindProperty("selectedDialogueIndex");
         }
 
         public override void OnInspectorGUI()
