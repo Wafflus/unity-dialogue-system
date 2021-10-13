@@ -26,6 +26,14 @@ namespace DS.Inspectors
 
         public override void OnInspectorGUI()
         {
+            DrawDialogueContainerArea();
+        }
+
+        private void DrawDialogueContainerArea()
+        {
+            EditorGUILayout.LabelField("Dialogue Container", EditorStyles.boldLabel);
+
+            EditorGUILayout.PropertyField(dialogueContainerProperty);
         }
     }
 }
