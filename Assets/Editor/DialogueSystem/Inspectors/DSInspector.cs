@@ -3,6 +3,7 @@ using UnityEditor;
 namespace DS.Inspectors
 {
     using Utilities;
+    using ScriptableObjects;
 
     [CustomEditor(typeof(DSDialogue))]
     public class DSInspector : Editor
@@ -39,7 +40,9 @@ namespace DS.Inspectors
 
             DrawDialogueContainerArea();
 
-            if (dialogueContainerProperty.objectReferenceValue == null)
+            DSDialogueContainerSO dialogueContainer = (DSDialogueContainerSO) dialogueContainerProperty.objectReferenceValue;
+
+            if (dialogueContainer == null)
             {
                 StopDrawing("Select a Dialogue Container to see the rest of the Inspector.");
 
