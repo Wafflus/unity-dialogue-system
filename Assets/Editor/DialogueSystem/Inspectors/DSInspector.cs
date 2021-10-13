@@ -48,7 +48,10 @@ namespace DS.Inspectors
 
             DrawFiltersArea();
 
-            DrawDialogueGroupArea();
+            if (groupedDialoguesProperty.boolValue)
+            {
+                DrawDialogueGroupArea();
+            }
 
             DrawDialogueArea();
 
