@@ -54,7 +54,15 @@ namespace DS.Inspectors
 
             ResetIndexesOnDialogueContainerUpdate(oldDialogueContainer, currentDialogueContainer);
 
+            bool oldGroupedDialoguesFilter = groupedDialoguesProperty.boolValue;
+            bool oldStartingDialoguesOnlyFilter = startingDialoguesOnlyProperty.boolValue;
+
             DrawFiltersArea();
+
+            bool currentGroupedDialoguesFilter = groupedDialoguesProperty.boolValue;
+            bool currentStartingDialoguesOnlyFilter = startingDialoguesOnlyProperty.boolValue;
+            
+            ResetIndexOnFiltersUpdate(oldGroupedDialoguesFilter, oldStartingDialoguesOnlyFilter, currentGroupedDialoguesFilter, currentStartingDialoguesOnlyFilter);
 
             List<string> dialogueNames;
 
@@ -62,7 +70,7 @@ namespace DS.Inspectors
 
             string dialogueInfoMessage;
 
-            if (groupedDialoguesProperty.boolValue)
+            if (currentGroupedDialoguesFilter)
             {
                 List<string> dialogueGroupNames = currentDialogueContainer.GetDialogueGroupNames();
 
@@ -177,6 +185,19 @@ namespace DS.Inspectors
         private void ResetIndexOnDialogueGroupUpdate(DSDialogueGroupSO oldDialogueGroup, DSDialogueGroupSO selectedDialogueGroup)
         {
             if (oldDialogueGroup != selectedDialogueGroup)
+            {
+                selectedDialogueIndexProperty.intValue = 0;
+            }
+        }
+
+        private void ResetIndexOnFiltersUpdate(bool oldGroupedDialogueFilter, bool oldStartingDialoguesOnlyFilter, bool currentGroupedDialogueFilter, bool currentStartingDialoguesOnlyFilter)
+        {
+            if (oldGroupedDialogueFilter != currentGroupedDialogueFilter)
+            {
+                selectedDialogueIndexProperty.intValue = 0;
+            }
+
+            if (oldStartingDialoguesOnlyFilter != currentStartingDialoguesOnlyFilter)
             {
                 selectedDialogueIndexProperty.intValue = 0;
             }
