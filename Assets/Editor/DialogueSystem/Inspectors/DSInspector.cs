@@ -29,6 +29,8 @@ namespace DS.Inspectors
             DrawDialogueContainerArea();
 
             DrawFiltersArea();
+
+            DrawDialogueGroupArea();
         }
 
         private void DrawDialogueContainerArea()
@@ -44,6 +46,13 @@ namespace DS.Inspectors
 
             EditorGUILayout.PropertyField(groupedDialoguesProperty);
             EditorGUILayout.PropertyField(startingDialoguesOnlyProperty);
+        }
+
+        private void DrawDialogueGroupArea()
+        {
+            EditorGUILayout.LabelField("Dialogue Group", EditorStyles.boldLabel);
+
+            EditorGUILayout.PropertyField(dialogueGroupProperty);
         }
     }
 }
