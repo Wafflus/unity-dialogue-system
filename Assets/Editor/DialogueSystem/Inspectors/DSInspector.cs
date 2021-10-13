@@ -2,6 +2,8 @@ using UnityEditor;
 
 namespace DS.Inspectors
 {
+    using Utilities;
+
     [CustomEditor(typeof(DSDialogue))]
     public class DSInspector : Editor
     {
@@ -48,41 +50,41 @@ namespace DS.Inspectors
 
         private void DrawDialogueContainerArea()
         {
-            EditorGUILayout.LabelField("Dialogue Container", EditorStyles.boldLabel);
+            DSInspectorUtility.DrawHeader("Dialogue Container");
 
-            EditorGUILayout.PropertyField(dialogueContainerProperty);
+            dialogueContainerProperty.DrawPropertyField();
 
-            EditorGUILayout.Space(4);
+            DSInspectorUtility.DrawSpace();
         }
 
         private void DrawFiltersArea()
         {
-            EditorGUILayout.LabelField("Filters", EditorStyles.boldLabel);
+            DSInspectorUtility.DrawHeader("Filters");
 
-            EditorGUILayout.PropertyField(groupedDialoguesProperty);
-            EditorGUILayout.PropertyField(startingDialoguesOnlyProperty);
+            groupedDialoguesProperty.DrawPropertyField();
+            startingDialoguesOnlyProperty.DrawPropertyField();
 
-            EditorGUILayout.Space(4);
+            DSInspectorUtility.DrawSpace();
         }
 
         private void DrawDialogueGroupArea()
         {
-            EditorGUILayout.LabelField("Dialogue Group", EditorStyles.boldLabel);
+            DSInspectorUtility.DrawHeader("Dialogue Group");
 
-            selectedDialogueGroupIndexProperty.intValue = EditorGUILayout.Popup("Dialogue Group", selectedDialogueGroupIndexProperty.intValue, new string[] { });
+            selectedDialogueGroupIndexProperty.intValue = DSInspectorUtility.DrawPopup("Dialogue Group", selectedDialogueGroupIndexProperty, new string[] { });
 
-            EditorGUILayout.PropertyField(dialogueGroupProperty);
+            dialogueGroupProperty.DrawPropertyField();
 
-            EditorGUILayout.Space(4);
+            DSInspectorUtility.DrawSpace();
         }
 
         private void DrawDialogueArea()
         {
-            EditorGUILayout.LabelField("Dialogue", EditorStyles.boldLabel);
+            DSInspectorUtility.DrawHeader("Dialogue");
 
-            selectedDialogueIndexProperty.intValue = EditorGUILayout.Popup("Dialogue", selectedDialogueIndexProperty.intValue, new string[] { });
+            selectedDialogueIndexProperty.intValue = DSInspectorUtility.DrawPopup("Dialogue", selectedDialogueIndexProperty, new string[] { });
 
-            EditorGUILayout.PropertyField(dialogueProperty);
+            dialogueProperty.DrawPropertyField();
         }
     }
 }
