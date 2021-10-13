@@ -39,6 +39,8 @@ namespace DS.Inspectors
         {
             serializedObject.Update();
 
+            DSDialogueContainerSO oldDialogueContainer = (DSDialogueContainerSO) dialogueContainerProperty.objectReferenceValue;
+
             DrawDialogueContainerArea();
 
             DSDialogueContainerSO dialogueContainer = (DSDialogueContainerSO) dialogueContainerProperty.objectReferenceValue;
