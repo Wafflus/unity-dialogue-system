@@ -56,6 +56,12 @@ namespace DS.Inspectors
 
             DrawFiltersArea();
 
+            List<string> dialogueNames;
+
+            string dialogueFolterPath = $"Assets/DialogueSystem/Dialogues/{currentDialogueContainer.FileName}";
+
+            string dialogueInfoMessage;
+
             if (groupedDialoguesProperty.boolValue)
             {
                 List<string> dialogueGroupNames = currentDialogueContainer.GetDialogueGroupNames();
