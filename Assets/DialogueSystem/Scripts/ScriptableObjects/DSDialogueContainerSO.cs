@@ -42,5 +42,17 @@ namespace DS.ScriptableObjects
 
             return groupedDialogueNames;
         }
+
+        public List<string> GetUngroupedDialogueNames()
+        {
+            List<string> ungroupedDialogueNames = new List<string>();
+
+            foreach (DSDialogueSO ungroupedDialogue in UngroupedDialogues)
+            {
+                ungroupedDialogueNames.Add(ungroupedDialogue.DialogueName);
+            }
+
+            return ungroupedDialogueNames;
+        }
     }
 }
