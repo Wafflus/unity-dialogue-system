@@ -59,6 +59,8 @@ namespace DS.Inspectors
         {
             EditorGUILayout.LabelField("Dialogue Group", EditorStyles.boldLabel);
 
+            selectedDialogueGroupIndexProperty.intValue = EditorGUILayout.Popup("Dialogue Group", selectedDialogueGroupIndexProperty.intValue, new string[] { });
+
             EditorGUILayout.PropertyField(dialogueGroupProperty);
         }
     }
