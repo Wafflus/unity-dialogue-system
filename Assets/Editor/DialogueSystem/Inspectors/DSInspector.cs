@@ -58,12 +58,12 @@ namespace DS.Inspectors
 
                 if (dialogueGroupNames.Count == 0)
                 {
-                    StopDrawing("There are no Dialogue Groups in this Dialogue Container");
+                    StopDrawing("There are no Dialogue Groups in this Dialogue Container.");
 
                     return;
                 }
 
-                DrawDialogueGroupArea();
+                DrawDialogueGroupArea(dialogueGroupNames);
             }
 
             DrawDialogueArea();
@@ -90,11 +90,11 @@ namespace DS.Inspectors
             DSInspectorUtility.DrawSpace();
         }
 
-        private void DrawDialogueGroupArea()
+        private void DrawDialogueGroupArea(List<string> dialogueGroupNames)
         {
             DSInspectorUtility.DrawHeader("Dialogue Group");
 
-            selectedDialogueGroupIndexProperty.intValue = DSInspectorUtility.DrawPopup("Dialogue Group", selectedDialogueGroupIndexProperty, new string[] { });
+            selectedDialogueGroupIndexProperty.intValue = DSInspectorUtility.DrawPopup("Dialogue Group", selectedDialogueGroupIndexProperty, dialogueGroupNames.ToArray());
 
             dialogueGroupProperty.DrawPropertyField();
 
