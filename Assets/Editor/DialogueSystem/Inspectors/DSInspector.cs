@@ -143,11 +143,17 @@ namespace DS.Inspectors
             DSInspectorUtility.DrawSpace();
         }
 
-        private void DrawDialogueArea(List<string> dialogueNames)
+        private void DrawDialogueArea(List<string> dialogueNames, string dialogueFolderPath)
         {
             DSInspectorUtility.DrawHeader("Dialogue");
 
             selectedDialogueIndexProperty.intValue = DSInspectorUtility.DrawPopup("Dialogue", selectedDialogueIndexProperty, dialogueNames.ToArray());
+
+            string selectedDialogueName = dialogueNames[selectedDialogueIndexProperty.intValue];
+
+            DSDialogueSO selectedDialogue = DSIOUtility.LoadAsset<DSDialogueSO>(dialogueFolderPath, selectedDialogueName);
+
+            dialogueProperty.objectReferenceValue = selectedDialogue;
 
             dialogueProperty.DrawPropertyField();
         }
