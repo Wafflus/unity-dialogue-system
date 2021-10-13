@@ -170,6 +170,10 @@ namespace DS.Inspectors
         {
             DSInspectorUtility.DrawHelpBox(reason);
 
+            DSInspectorUtility.DrawSpace();
+
+            DSInspectorUtility.DrawHelpBox("You need to select a Dialogue for this component to work properly at Runtime!", MessageType.Warning);
+
             serializedObject.ApplyModifiedProperties();
         }
 
