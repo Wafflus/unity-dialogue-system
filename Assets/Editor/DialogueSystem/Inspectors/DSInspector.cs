@@ -135,13 +135,22 @@ namespace DS.Inspectors
         {
             DSInspectorUtility.DrawHeader("Dialogue Group");
 
+            int oldSelectedDialogueGroupIndex = selectedDialogueGroupIndexProperty.intValue;
+
+            DSDialogueGroupSO oldDialogueGroup = (DSDialogueGroupSO) dialogueGroupProperty.objectReferenceValue;
+
+            bool isOldDialogueGroupNull = oldDialogueGroup == null;
+
+            string oldDialogueGroupName = isOldDialogueGroupNull ? "" : oldDialogueGroup.GroupName;
+
+            UpdateIndexOnNamesListUpdate(dialogueGroupNames, selectedDialogueGroupIndexProperty, oldSelectedDialogueGroupIndex, oldDialogueGroupName, isOldDialogueGroupNull);
+
             selectedDialogueGroupIndexProperty.intValue = DSInspectorUtility.DrawPopup("Dialogue Group", selectedDialogueGroupIndexProperty, dialogueGroupNames.ToArray());
 
             string selectedDialogueGroupName = dialogueGroupNames[selectedDialogueGroupIndexProperty.intValue];
 
-            DSDialogueGroupSO oldDialogueGroup = (DSDialogueGroupSO) dialogueGroupProperty.objectReferenceValue;
             DSDialogueGroupSO selectedDialogueGroup = DSIOUtility.LoadAsset<DSDialogueGroupSO>($"Assets/DialogueSystem/Dialogues/{dialogueContainer.FileName}/Groups/{selectedDialogueGroupName}", selectedDialogueGroupName);
-            
+
             ResetIndexOnDialogueGroupUpdate(oldDialogueGroup, selectedDialogueGroup);
 
             dialogueGroupProperty.objectReferenceValue = selectedDialogueGroup;
@@ -154,6 +163,16 @@ namespace DS.Inspectors
         private void DrawDialogueArea(List<string> dialogueNames, string dialogueFolderPath)
         {
             DSInspectorUtility.DrawHeader("Dialogue");
+
+            int oldSelectedDialogueIndex = selectedDialogueIndexProperty.intValue;
+
+            DSDialogueSO oldDialogue = (DSDialogueSO) dialogueProperty.objectReferenceValue;
+
+            bool isOldDialogueNull = oldDialogue == null;
+
+            string oldDialogueName = isOldDialogueNull ? "" : oldDialogue.DialogueName;
+
+            UpdateIndexOnNamesListUpdate(dialogueNames, selectedDialogueIndexProperty, oldSelectedDialogueIndex, oldDialogueName, isOldDialogueNull);
 
             selectedDialogueIndexProperty.intValue = DSInspectorUtility.DrawPopup("Dialogue", selectedDialogueIndexProperty, dialogueNames.ToArray());
 
@@ -204,6 +223,32 @@ namespace DS.Inspectors
             if (oldStartingDialoguesOnlyFilter != currentStartingDialoguesOnlyFilter)
             {
                 selectedDialogueIndexProperty.intValue = 0;
+            }
+        }
+
+        private void UpdateIndexOnNamesListUpdate(List<string> optionNames, SerializedProperty indexProperty, int oldSelectedPropertyIndex, string oldPropertyName, bool isOldPropertyNull)
+        {
+            if (isOldPropertyNull)
+            {
+                indexProperty.intValue = 0;
+
+                return;
+            }
+
+            bool oldIndexIsInRangeOfNamesListCount = oldSelectedPropertyIndex <= optionNames.Count - 1;
+            bool oldIndexIsOutOfBoundsOfNamesListCount = oldSelectedPropertyIndex > optionNames.Count - 1;
+            bool oldNameIsDifferentThanSelectedName = oldPropertyName != optionNames[oldSelectedPropertyIndex];
+
+            if ((oldIndexIsInRangeOfNamesListCount && oldNameIsDifferentThanSelectedName) && oldIndexIsOutOfBoundsOfNamesListCount)
+            {
+                if (optionNames.Contains(oldPropertyName))
+                {
+                    selectedDialogueGroupIndexProperty.intValue = optionNames.IndexOf(oldPropertyName);
+
+                    return;
+                }
+
+                selectedDialogueGroupIndexProperty.intValue = 0;
             }
         }
     }
