@@ -75,10 +75,16 @@ The Inspector allows the filtering of dialogues by grouped and non-grouped dialo
 
 # Version
 
-Current version: 1.0.1
+Current version: 1.0.2
+
+# Contributing
+
+This Dialogue System won't be updated further than this as its main purpose was to fit my game needs and the tutorial series, which should now be over.
+
+If you want to support me, subscribing to my [Youtube Channel](https://www.youtube.com/c/IndieWafflus) or following me on [Twitter](https://twitter.com/IndieWafflus) would help me out a ton and be appreciated.
 
 # Notes
 
-The GraphView API is likely being deprecated towards the [GTF (GraphTools Foundation) Package](https://docs.unity3d.com/Packages/com.unity.graphtools.foundation@0.8/manual/index.html), but should still work.
+The GraphView API is likely being deprecated towards the [GTF (GraphTools Foundation) Package](https://docs.unity3d.com/Packages/com.unity.graphtools.foundation@0.8/manual/index.html), but should still work in Unity 2019 and Unity 2020.
 
 This was made using Unity 2020.
