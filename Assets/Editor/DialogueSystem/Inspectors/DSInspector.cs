@@ -39,8 +39,6 @@ namespace DS.Inspectors
         {
             serializedObject.Update();
 
-            DSDialogueContainerSO oldDialogueContainer = (DSDialogueContainerSO) dialogueContainerProperty.objectReferenceValue;
-
             DrawDialogueContainerArea();
 
             DSDialogueContainerSO currentDialogueContainer = (DSDialogueContainerSO) dialogueContainerProperty.objectReferenceValue;
@@ -52,18 +50,11 @@ namespace DS.Inspectors
                 return;
             }
 
-            ResetIndexesOnDialogueContainerUpdate(oldDialogueContainer, currentDialogueContainer);
-
-            bool oldGroupedDialoguesFilter = groupedDialoguesProperty.boolValue;
-            bool oldStartingDialoguesOnlyFilter = startingDialoguesOnlyProperty.boolValue;
-
             DrawFiltersArea();
 
             bool currentGroupedDialoguesFilter = groupedDialoguesProperty.boolValue;
             bool currentStartingDialoguesOnlyFilter = startingDialoguesOnlyProperty.boolValue;
             
-            ResetIndexOnFiltersUpdate(oldGroupedDialoguesFilter, oldStartingDialoguesOnlyFilter, currentGroupedDialoguesFilter, currentStartingDialoguesOnlyFilter);
-
             List<string> dialogueNames;
 
             string dialogueFolderPath = $"Assets/DialogueSystem/Dialogues/{currentDialogueContainer.FileName}";
@@ -151,8 +142,6 @@ namespace DS.Inspectors
 
             DSDialogueGroupSO selectedDialogueGroup = DSIOUtility.LoadAsset<DSDialogueGroupSO>($"Assets/DialogueSystem/Dialogues/{dialogueContainer.FileName}/Groups/{selectedDialogueGroupName}", selectedDialogueGroupName);
 
-            ResetIndexOnDialogueGroupUpdate(oldDialogueGroup, selectedDialogueGroup);
-
             dialogueGroupProperty.objectReferenceValue = selectedDialogueGroup;
 
             DSInspectorUtility.DrawDisabledFields(() => dialogueGroupProperty.DrawPropertyField());
@@ -196,36 +185,6 @@ namespace DS.Inspectors
             serializedObject.ApplyModifiedProperties();
         }
 
-        private void ResetIndexesOnDialogueContainerUpdate(DSDialogueContainerSO oldDialogueContainer, DSDialogueContainerSO currentDialogueContainer)
-        {
-            if (oldDialogueContainer != currentDialogueContainer)
-            {
-                selectedDialogueGroupIndexProperty.intValue = 0;
-                selectedDialogueIndexProperty.intValue = 0;
-            }
-        }
-
-        private void ResetIndexOnDialogueGroupUpdate(DSDialogueGroupSO oldDialogueGroup, DSDialogueGroupSO selectedDialogueGroup)
-        {
-            if (oldDialogueGroup != selectedDialogueGroup)
-            {
-                selectedDialogueIndexProperty.intValue = 0;
-            }
-        }
-
-        private void ResetIndexOnFiltersUpdate(bool oldGroupedDialogueFilter, bool oldStartingDialoguesOnlyFilter, bool currentGroupedDialogueFilter, bool currentStartingDialoguesOnlyFilter)
-        {
-            if (oldGroupedDialogueFilter != currentGroupedDialogueFilter)
-            {
-                selectedDialogueIndexProperty.intValue = 0;
-            }
-
-            if (oldStartingDialoguesOnlyFilter != currentStartingDialoguesOnlyFilter)
-            {
-                selectedDialogueIndexProperty.intValue = 0;
-            }
-        }
-
         private void UpdateIndexOnNamesListUpdate(List<string> optionNames, SerializedProperty indexProperty, int oldSelectedPropertyIndex, string oldPropertyName, bool isOldPropertyNull)
         {
             if (isOldPropertyNull)
@@ -235,20 +194,19 @@ namespace DS.Inspectors
                 return;
             }
 
-            bool oldIndexIsInRangeOfNamesListCount = oldSelectedPropertyIndex <= optionNames.Count - 1;
             bool oldIndexIsOutOfBoundsOfNamesListCount = oldSelectedPropertyIndex > optionNames.Count - 1;
-            bool oldNameIsDifferentThanSelectedName = oldPropertyName != optionNames[oldSelectedPropertyIndex];
+            bool oldNameIsDifferentThanSelectedName = oldIndexIsOutOfBoundsOfNamesListCount || oldPropertyName != optionNames[oldSelectedPropertyIndex];
 
-            if ((oldIndexIsInRangeOfNamesListCount && oldNameIsDifferentThanSelectedName) && oldIndexIsOutOfBoundsOfNamesListCount)
+            if (oldNameIsDifferentThanSelectedName)
             {
                 if (optionNames.Contains(oldPropertyName))
                 {
-                    selectedDialogueGroupIndexProperty.intValue = optionNames.IndexOf(oldPropertyName);
+                    indexProperty.intValue = optionNames.IndexOf(oldPropertyName);
 
                     return;
                 }
 
-                selectedDialogueGroupIndexProperty.intValue = 0;
+                indexProperty.intValue = 0;
             }
         }
     }
